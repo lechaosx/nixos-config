@@ -22,5 +22,11 @@
 		};
 	};
 
+	dconf.settings = {
+		"org/gnome/desktop/interface" = {
+			"clock-show-seconds" = true;
+		};
+	};
+
 	home.stateVersion = "24.11";
 }
