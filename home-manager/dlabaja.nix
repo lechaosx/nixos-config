@@ -25,7 +25,14 @@
 
 	dconf.settings = {
 		"org/gnome/desktop/interface" = {
-			"clock-show-seconds" = true;
+			clock-show-seconds = true;
+		};
+		"org/gnome/desktop/input-sources" = {
+			sources = [(pkgs.lib.gvariant.mkTuple ["xkb" "us"]) (pkgs.lib.gvariant.mkTuple ["xkb" "cz"])];
+		};
+		"org/gnome/desktop/wm/keybindings" = {
+			switch-input-source = ["<Shift>Alt_L"];
+			switch-input-source-backward = ["<Alt>Shift_L"];
 		};
 	};
 
