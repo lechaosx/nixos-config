@@ -9,6 +9,7 @@
 		vlc
 		btop
 		git
+		discord
 	];
 
 	programs = {
