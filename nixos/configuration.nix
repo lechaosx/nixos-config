@@ -84,8 +84,8 @@
 
 	users.users.dlabaja = {
 		isNormalUser = true;
-		description = " Drahomír Dlabaja";
-		extraGroups = [ "networkmanager" "wheel" ];
+		description = "Drahomír Dlabaja";
+		extraGroups = [ "networkmanager" "wheel" "docker" ];
 	};
 
 	programs = {
@@ -96,6 +96,8 @@
 			localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
 		};
 	};
+
+	virtualisation.docker.enable = true;
 	
 	nixpkgs.config.allowUnfree = true;
 

@@ -10,7 +10,6 @@
 		btop
 		git
 		discord
-		docker
 	];
 
 	programs = {
