@@ -12,6 +12,12 @@
 			auto-optimise-store = true;
 			experimental-features = [ "nix-command" "flakes" ];
 		};
+
+		gc = {
+			automatic = true;
+			dates = "weekly";
+			options = "--delete-older-than 1w";
+		};
 	};
 
 	boot.loader = {
@@ -20,6 +26,7 @@
 			efiSupport = true;
 			device = "nodev";
 			gfxmodeEfi = "1920x1080x32";
+			configurationLimit = 10;
 		};
 		
 		efi.canTouchEfiVariables = true;
