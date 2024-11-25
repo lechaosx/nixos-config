@@ -8,8 +8,8 @@
 	home.packages = with pkgs; [
 		vlc
 		btop
-		git
 		discord
+		transmission_4
 	];
 
 	programs = {
