@@ -9,7 +9,7 @@
 		vlc
 		btop
 		discord
-		transmission_4
+		transmission_4-gtk
 	];
 
 	programs = {
