@@ -34,6 +34,9 @@
 			switch-input-source = ["<Shift>Alt_L"];
 			switch-input-source-backward = ["<Alt>Shift_L"];
 		};
+		"org/gnome/desktop/wm/preferences" = {
+			button-layout = "appmenu:minimize,maximize,close";
+		};
 	};
 
 	home.stateVersion = "24.11";
