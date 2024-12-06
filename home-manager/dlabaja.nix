@@ -9,6 +9,7 @@
 		vlc
 		btop
 		discord
+		spotify
 		transmission_4-gtk
 	];
 
