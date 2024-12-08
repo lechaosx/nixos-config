@@ -10,6 +10,7 @@
 		btop
 		discord
 		spotify
+		prismlauncher
 		transmission_4-gtk
 	];
 
