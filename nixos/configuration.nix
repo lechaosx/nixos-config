@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ ... }: {
+{ pkgs, ... }: {
 	imports = [
 		./hardware-configuration.nix
 	];
@@ -78,6 +78,27 @@
 		};
 	};
 
+	environment.gnome.excludePackages = [
+		pkgs.gnome-tour
+		pkgs.baobab
+		pkgs.epiphany
+		pkgs.gnome-calendar
+		pkgs.gnome-characters
+		pkgs.gnome-clocks
+		pkgs.gnome-contacts
+		pkgs.gnome-font-viewer
+		pkgs.gnome-maps
+		pkgs.gnome-music
+		pkgs.gnome-weather
+		pkgs.simple-scan
+		pkgs.totem
+		pkgs.yelp
+		pkgs.file-roller
+		pkgs.geary
+		pkgs.seahorse
+		pkgs.sushi
+	];
+
 	hardware = {
 		graphics.enable = true;
 
@@ -96,6 +117,8 @@
 	};
 
 	programs = {
+		firefox.enable = true;
+
 		steam = {
 			enable = true;
 			remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play

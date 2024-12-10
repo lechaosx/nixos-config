@@ -16,7 +16,6 @@
 
 	programs = {
 		vscode.enable = true;
-		firefox.enable = true;
 
 		git = {
 			enable = true;
@@ -38,6 +37,12 @@
 		};
 		"org/gnome/desktop/wm/preferences" = {
 			button-layout = "appmenu:minimize,maximize,close";
+		};
+		"org/gnome/desktop/app-folders" = {
+			folder-children = [""];
+		};
+		"org/gnome/shell" = {
+			app-picker-layout = [""];
 		};
 	};
 
