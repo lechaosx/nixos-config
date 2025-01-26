@@ -15,7 +15,10 @@
 	];
 
 	programs = {
-		vscode.enable = true;
+		vscode = {
+			enable = true;
+			package = pkgs.vscode.fhs;
+		};
 
 		git = {
 			enable = true;
