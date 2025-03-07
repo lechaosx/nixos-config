@@ -58,6 +58,8 @@
 	};
 
 	services = {
+		gnome.gnome-remote-desktop.enable = true;
+		
 		xserver = {
 			enable = true;
 			displayManager.gdm.enable = true;
@@ -76,7 +78,19 @@
 
 			pulse.enable = true;
 		};
+
+		openssh = {
+			enable = true;
+			settings = {
+				PasswordAuthentication = false;
+				UseDns = true;
+				X11Forwarding = true;
+				PermitRootLogin = "no";
+			};
+		};
 	};
+
+	systemd.services."gnome-remote-desktop".wantedBy = [ "graphical.target" ];
 
 	environment.gnome.excludePackages = [
 		pkgs.gnome-tour
