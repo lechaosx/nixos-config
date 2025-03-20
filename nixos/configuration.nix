@@ -35,6 +35,7 @@
 	networking = {
 		hostName = "dlabaja";
 		networkmanager.enable = true;
+		interfaces.enp4s0.wakeOnLan.enable = true;
 	};
 
 	time.timeZone = "Europe/Prague";
