@@ -33,7 +33,7 @@
 	};
 
 	networking = {
-		hostName = "dlabaja";
+		hostName = "dlabaja-desktop";
 		networkmanager.enable = true;
 		interfaces.enp4s0.wakeOnLan.enable = true;
 	};

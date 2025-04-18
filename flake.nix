@@ -11,9 +11,9 @@
 
 	outputs = { nixpkgs, home-manager, ... }: {
 		nixosConfigurations = {
-			dlabaja = nixpkgs.lib.nixosSystem {
+			dlabaja-desktop = nixpkgs.lib.nixosSystem {
 				modules = [
-					./nixos/configuration.nix
+					./hosts/dlabaja-desktop/configuration.nix
 					home-manager.nixosModules.home-manager {
 						home-manager.users.dlabaja = import ./home-manager/dlabaja.nix;
 					}
