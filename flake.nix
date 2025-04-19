@@ -19,6 +19,15 @@
 					}
 				];
 			};
+
+			dlabaja-asus = nixpkgs.lib.nixosSystem {
+				modules = [
+					./hosts/dlabaja-asus/configuration.nix
+					home-manager.nixosModules.home-manager {
+						home-manager.users.dlabaja = import ./home-manager/dlabaja.nix;
+					}
+				];
+			};
 		};
 	};
 }
