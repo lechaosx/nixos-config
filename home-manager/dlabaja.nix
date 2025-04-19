@@ -12,6 +12,7 @@
 		spotify
 		transmission_4-gtk
 		jetbrains.clion
+		remmina
 	];
 
 	programs = {

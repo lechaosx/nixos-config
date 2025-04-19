@@ -86,6 +86,7 @@
 			pkgs.gnome-calendar
 			pkgs.gnome-characters
 			pkgs.gnome-clocks
+			pkgs.gnome-connections
 			pkgs.gnome-contacts
 			pkgs.gnome-font-viewer
 			pkgs.gnome-maps
