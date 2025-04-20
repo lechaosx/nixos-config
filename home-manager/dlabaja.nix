@@ -13,6 +13,7 @@
 		transmission_4-gtk
 		jetbrains.clion
 		remmina
+		gnomeExtensions.freon
 	];
 
 	programs = {

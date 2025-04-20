@@ -23,7 +23,14 @@
 	};
 
 	boot.loader = {
-		systemd-boot.enable = true;
+		grub = {
+			enable = true;
+			efiSupport = true;
+			device = "nodev";
+			gfxmodeEfi = "1920x1200x32";
+			configurationLimit = 10;
+		};
+
 		efi.canTouchEfiVariables = true;
 	};
 
@@ -57,9 +64,8 @@
 			enable = true;
 			displayManager.gdm.enable = true;
 			desktopManager.gnome.enable = true;
+			excludePackages = [ pkgs.xterm ]; 
 		};
-
-		printing.enable = true;
 
 		pipewire = {
 			enable = true;
@@ -75,7 +81,8 @@
 
 	environment = {
 		systemPackages = [
-			pkgs.gnomeExtensions.power-profile-switcher
+			# Broken as of 20. 4. 2025
+			# pkgs.gnomeExtensions.power-profile-switcher
 			pkgs.gnomeExtensions.battery-health-charging
 		];
 

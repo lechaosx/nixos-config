@@ -71,6 +71,8 @@
 
 			desktopManager.gnome.enable = true;
 			videoDrivers = ["nvidia"];
+
+			excludePackages = [ pkgs.xterm ]; 
 		};
 
 		printing.enable = true;
