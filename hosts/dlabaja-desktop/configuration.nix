@@ -96,6 +96,8 @@
 				PermitRootLogin = "no";
 			};
 		};
+
+		power-profiles-daemon.enable = false; # Override default gnome setting
 	};
 
 	systemd.services."gnome-remote-desktop".wantedBy = [ "graphical.target" ];
