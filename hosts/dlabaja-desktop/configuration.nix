@@ -75,8 +75,6 @@
 			excludePackages = [ pkgs.xterm ]; 
 		};
 
-		printing.enable = true;
-
 		pipewire = {
 			enable = true;
 			alsa = {
