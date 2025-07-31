@@ -20,16 +20,22 @@
 		};
 	};
 
-	boot.loader = {
-		grub = {
-			enable = true;
-			efiSupport = true;
-			device = "nodev";
-			gfxmodeEfi = "1920x1080x32";
-			configurationLimit = 10;
+		boot = {
+		loader = {
+			grub = {
+				enable = true;
+				efiSupport = true;
+				device = "nodev";
+				gfxmodeEfi = "1920x1080x32";
+				configurationLimit = 10;
+			};
+			
+			efi.canTouchEfiVariables = true;
 		};
-		
-		efi.canTouchEfiVariables = true;
+
+		kernelParams = [
+			"usbcore.autosuspend=-1"
+		];
 	};
 
 	networking = {
