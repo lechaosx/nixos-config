@@ -33,10 +33,10 @@
 	};
 
 	networking = {
-		hostName = "dlabaja-asus";
+		hostName = "dlabaja-seznam-hp";
 		networkmanager.enable = true;
 	};
-
+		
 	time.timeZone = "Europe/Prague";
 
 	i18n = {
@@ -73,6 +73,8 @@
 			};
 			pulse.enable = true;
 		};
+
+		fprintd.enable = true;
 	};
 
 	security.rtkit.enable = true;
@@ -111,19 +113,13 @@
 		isNormalUser = true;
 		description = "Drahomír Dlabaja";
 		extraGroups = [ "networkmanager" "wheel" "docker" ];
+		hashedPassword = "";
 	};
 
-	programs = {
-		firefox.enable = true;
+	programs.firefox.enable = true;
 
-		steam = {
-			enable = true;
-			remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-			dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-			localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
-		};
-	};
-
+	virtualisation.docker.enable = true;
+	
 	nixpkgs.config.allowUnfree = true;
 
 	# This value determines the NixOS release from which the default
@@ -132,6 +128,6 @@
 	# this value at the release version of the first install of this system.
 	# Before changing this value read the documentation for this option
 	# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-	system.stateVersion = "24.11"; # Did you read the comment?
+	system.stateVersion = "25.05"; # Did you read the comment?
 
 }
