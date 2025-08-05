@@ -33,7 +33,7 @@
 				modules = [
 					./hosts/dlabaja-seznam-hp/configuration.nix
 					home-manager.nixosModules.home-manager {
-						home-manager.users.dlabaja = import ./home-manager/dlabaja.nix;
+						home-manager.users.dlabaja = import ./home-manager/dlabaja-seznam.nix;
 					}
 				];
 			};
