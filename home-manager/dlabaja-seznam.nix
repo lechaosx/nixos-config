@@ -12,8 +12,11 @@
 		btop
 		discord
 		spotify
-		jetbrains.clion
 		remmina
+		zoom-us
+		jetbrains.clion
+		nextcloud-client
+		mattermost-desktop
 		gnomeExtensions.freon
 	];
 

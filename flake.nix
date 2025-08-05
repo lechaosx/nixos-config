@@ -7,9 +7,11 @@
 			url = "github:nix-community/home-manager/release-25.05";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
+
+		sentinelone.url = "github:devusb/sentinelone-nix";
 	};
 
-	outputs = { nixpkgs, home-manager, ... }: {
+	outputs = { nixpkgs, home-manager, sentinelone, ... }: {
 		nixosConfigurations = {
 			dlabaja-desktop = nixpkgs.lib.nixosSystem {
 				modules = [
@@ -35,6 +37,7 @@
 					home-manager.nixosModules.home-manager {
 						home-manager.users.dlabaja = import ./home-manager/dlabaja-seznam.nix;
 					}
+					sentinelone.nixosModules.sentinelone
 				];
 			};
 		};

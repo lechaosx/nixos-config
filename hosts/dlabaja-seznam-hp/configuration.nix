@@ -58,6 +58,17 @@
 	};
 
 	services = {
+		sentinelone = {
+			enable = true;
+			sentinelOneManagementTokenPath = "/etc/sentinelone/token";
+			email = "drahomir.dlabaja@firma.seznam.cz";
+			serialNumber = "5CG5115H0F";
+			package = pkgs.sentinelone.overrideAttrs (old: {
+				version = "24.3.3.6";
+				src = ./SentinelAgent_linux_x86_64_v24_3_3_6.deb;
+			});
+		};
+
 		xserver = {
 			enable = true;
 			displayManager.gdm.enable = true;
