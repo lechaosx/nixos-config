@@ -14,8 +14,8 @@
 		spotify
 		remmina
 		zoom-us
+		gitkraken
 		jetbrains.clion
-		nextcloud-client
 		mattermost-desktop
 		gnomeExtensions.freon
 	];

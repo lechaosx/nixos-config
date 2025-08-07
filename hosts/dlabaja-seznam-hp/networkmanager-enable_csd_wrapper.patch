@@ -1,0 +1,47 @@
+diff --git a/src/nm-openconnect-service.c b/src/nm-openconnect-service.c
+index 0005534..643a611 100644
+--- a/src/nm-openconnect-service.c
++++ b/src/nm-openconnect-service.c
+@@ -438,7 +438,7 @@ nm_openconnect_start_openconnect_binary (NMOpenconnectPlugin *plugin,
+ 	gint stdin_fd;
+ 	char csd_user_arg[60];
+ 	const char *props_vpn_gw, *props_cookie, *props_cacert, *props_mtu, *props_gwcert, *props_proxy;
+-	const char *props_csd_enable, *props_csd_wrapper, *props_resolve;
++	const char *props_csd_enable, *props_csd_wrapper, *props_reported_os, *props_resolve;
+ 	const char *props_disable_udp;
+ 	const char *protocol;
+ 	const char *props_tun_name;
+@@ -547,24 +547,16 @@ nm_openconnect_start_openconnect_binary (NMOpenconnectPlugin *plugin,
+ 
+ 	props_csd_enable = nm_setting_vpn_get_data_item (s_vpn, NM_OPENCONNECT_KEY_CSD_ENABLE);
+ 	props_csd_wrapper = nm_setting_vpn_get_data_item (s_vpn, NM_OPENCONNECT_KEY_CSD_WRAPPER);
++  props_reported_os = nm_setting_vpn_get_data_item (s_vpn, NM_OPENCONNECT_KEY_REPORTED_OS);
+ 	if (props_csd_enable && !strcmp (props_csd_enable, "yes") && props_csd_wrapper) {
+-		/* TODO: disable passing the script to openconnect.
+-		 *
+-		 * As we have priv->tun_name, openconnect will run as an unprivileged user NM_OPENCONNECT_USER.
+-		 * However, it is still not safe to run untrusted scripts provided by the user.
+-		 *
+-		 * This needs a different solution, for now, just log a warning. */
+-		if (FALSE && priv->tun_name) {
+-			/* Replicate the CSD parameters used in the authentication phase, for
+-			   supported protocols which may need to invoke the security trojan ("CSD")
+-			   in the tunnel/connection phase. */
+-			g_ptr_array_add (openconnect_argv, (gpointer) "--csd-wrapper");
+-			g_ptr_array_add (openconnect_argv, (gpointer) props_csd_wrapper);
+-			g_ptr_array_add (openconnect_argv, (gpointer) "--csd-user");
+-			g_ptr_array_add (openconnect_argv, (gpointer) nm_sprintf_buf (csd_user_arg, "%d", gl.tun_owner));
+-		} else {
+-			_LOGW ("openconnect won't call csd-wrapper script because it cannot drop privileges to user \"%s\"",
+-			       NM_OPENCONNECT_USER);
++		g_ptr_array_add (openconnect_argv, (gpointer) "--csd-wrapper");
++		g_ptr_array_add (openconnect_argv, (gpointer) props_csd_wrapper);
++		g_ptr_array_add (openconnect_argv, (gpointer) "--csd-user");
++		g_ptr_array_add (openconnect_argv, (gpointer) nm_sprintf_buf (csd_user_arg, "%d", gl.tun_owner));
++		if (props_reported_os) {
++		   g_ptr_array_add (openconnect_argv, (gpointer) "--os");
++		   g_ptr_array_add (openconnect_argv, (gpointer) props_reported_os);
++		   _LOGI ("OpenConnect will report \"%s\" os type", NM_OPENCONNECT_KEY_REPORTED_OS);
+ 		}
+ 	}
+ 

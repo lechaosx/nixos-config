@@ -34,7 +34,14 @@
 
 	networking = {
 		hostName = "dlabaja-seznam-hp";
-		networkmanager.enable = true;
+		networkmanager = {
+			enable = true;
+			plugins = [
+				(pkgs.networkmanager-openconnect.overrideAttrs (finalAttrs: previousAttrs: {
+					patches = previousAttrs.patches ++ [./networkmanager-enable_csd_wrapper.patch];
+				}))
+			];
+		};
 	};
 		
 	time.timeZone = "Europe/Prague";
@@ -58,6 +65,8 @@
 	};
 
 	services = {
+		resolved.enable = true;
+
 		sentinelone = {
 			enable = true;
 			sentinelOneManagementTokenPath = "/etc/sentinelone/token";
@@ -92,8 +101,6 @@
 
 	environment = {
 		systemPackages = [
-			# Broken as of 20. 4. 2025
-			# pkgs.gnomeExtensions.power-profile-switcher
 			pkgs.gnomeExtensions.battery-health-charging
 		];
 
