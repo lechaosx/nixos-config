@@ -17,7 +17,7 @@
 		jetbrains.pycharm-professional
 		remmina
 		gitkraken
-		gnomeExtensions.freon
+		gnomeExtensions.vitals
 	];
 
 	programs = {
@@ -28,8 +28,10 @@
 
 		git = {
 			enable = true;
-			userName = "Drahomír Dlabaja";
-			userEmail = "lechaosx@gmail.com";
+			settings.user = {
+				name = "Drahomír Dlabaja";
+				email = "lechaosx@gmail.com";
+			};
 		};
 	};
 
