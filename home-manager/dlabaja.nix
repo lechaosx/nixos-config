@@ -1,9 +1,5 @@
 { pkgs, ... }:
 {
-	nixpkgs.config = {
-		allowUnfree = true;
-	};
-
 	home.username = "dlabaja";
 	home.homeDirectory = "/home/dlabaja";
 
