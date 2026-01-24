@@ -94,6 +94,8 @@
 			};
 		};
 
+		hardware.openrgb.enable = true;
+
 		power-profiles-daemon.enable = false; # Override default gnome setting
 	};
 
