@@ -10,7 +10,7 @@
 		spotify
 		transmission_4-gtk
 		jetbrains.clion
-		jetbrains.pycharm-professional
+		jetbrains.pycharm
 		remmina
 		gitkraken
 		gnomeExtensions.vitals
