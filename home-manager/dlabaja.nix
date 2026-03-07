@@ -14,6 +14,9 @@
 		remmina
 		gitkraken
 		gnomeExtensions.vitals
+		gcc
+		cmake
+		ninja
 	];
 
 	programs = {
