@@ -126,7 +126,12 @@
 			localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
 		};
 
-		nix-ld.enable = true;
+		nix-ld = {
+			enable = true;
+			libraries = [
+				pkgs.stdenv.cc.cc
+			];
+		};
 	};
 
 	nixpkgs.config.allowUnfree = true;

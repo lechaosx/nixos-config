@@ -8,7 +8,7 @@
 		btop
 		discord
 		spotify
-		transmission_4-gtk
+		transmission_4-qt
 		jetbrains.clion
 		jetbrains.pycharm
 		remmina
