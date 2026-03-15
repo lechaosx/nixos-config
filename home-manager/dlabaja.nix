@@ -17,6 +17,8 @@
 		gcc
 		cmake
 		ninja
+		aseprite
+		lua
 	];
 
 	programs = {
