@@ -9,8 +9,15 @@
 
 	outputs = { nixpkgs, home-manager, ... }:
 	let
+		nixosModules = {
+			base    = ./modules/base.nix;
+			desktop = ./modules/desktop.nix;
+			grub    = ./modules/grub.nix;
+		};
+
 		mkHost = name:
 			nixpkgs.lib.nixosSystem {
+				specialArgs = { customModules = nixosModules; };
 				modules = [
 					./hosts/${name}/configuration.nix
 					home-manager.nixosModules.home-manager {
@@ -22,5 +29,7 @@
 			};
 	in {
 		nixosConfigurations = nixpkgs.lib.genAttrs [ "dlabaja-desktop" "dlabaja-asus" ] mkHost;
+
+		inherit nixosModules;
 	};
 }
