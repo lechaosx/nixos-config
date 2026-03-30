@@ -19,6 +19,7 @@
 		ninja
 		aseprite
 		lua
+		claude-code
 	];
 
 	programs = {
@@ -33,6 +34,8 @@
 				name = "Drahomír Dlabaja";
 				email = "lechaosx@gmail.com";
 			};
+
+			signing.format = "openpgp";
 		};
 	};
 
