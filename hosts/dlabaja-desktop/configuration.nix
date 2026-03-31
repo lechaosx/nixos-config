@@ -4,7 +4,9 @@
 		./hardware-configuration.nix
 		customModules.base
 		customModules.desktop
+		customModules.gaming
 		customModules.grub
+		customModules.docker
 	];
 
 	grub.gfxmodeEfi = "1920x1080x32";
@@ -48,8 +50,6 @@
 			powerManagement.enable = true;
 		};
 	};
-
-	virtualisation.docker.enable = true;
 
 	system.stateVersion = "24.05";
 }

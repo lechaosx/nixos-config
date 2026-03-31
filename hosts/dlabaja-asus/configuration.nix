@@ -4,6 +4,7 @@
 		./hardware-configuration.nix
 		customModules.base
 		customModules.desktop
+		customModules.gaming
 		customModules.grub
 	];
 

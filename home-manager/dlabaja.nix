@@ -1,64 +1,17 @@
-{ pkgs, ... }:
+{ pkgs, customModules, ... }:
 {
-	home.username = "dlabaja";
-	home.homeDirectory = "/home/dlabaja";
+	imports = [ customModules.base ];
 
 	home.packages = with pkgs; [
-		vlc
-		btop
 		discord
-		spotify
 		transmission_4-qt
-		jetbrains.clion
-		jetbrains.pycharm
-		remmina
-		gitkraken
-		gnomeExtensions.vitals
-		gcc
-		cmake
-		ninja
 		aseprite
 		lua
-		claude-code
 	];
 
-	programs = {
-		vscode = {
-			enable = true;
-			package = pkgs.vscode.fhs;
-		};
-
-		git = {
-			enable = true;
-			settings.user = {
-				name = "Drahomír Dlabaja";
-				email = "lechaosx@gmail.com";
-			};
-
-			signing.format = "openpgp";
-		};
-	};
-
-	dconf.settings = {
-		"org/gnome/desktop/interface" = {
-			clock-show-seconds = true;
-		};
-		"org/gnome/desktop/input-sources" = {
-			sources = [(pkgs.lib.gvariant.mkTuple ["xkb" "us"]) (pkgs.lib.gvariant.mkTuple ["xkb" "cz"])];
-		};
-		"org/gnome/desktop/wm/keybindings" = {
-			switch-input-source = ["<Shift>Alt_L"];
-			switch-input-source-backward = ["<Alt>Shift_L"];
-		};
-		"org/gnome/desktop/wm/preferences" = {
-			button-layout = "appmenu:minimize,maximize,close";
-		};
-		"org/gnome/desktop/app-folders" = {
-			folder-children = [""];
-		};
-		"org/gnome/shell" = {
-			app-picker-layout = [""];
-		};
+	programs.git.settings.user = {
+		name = "Drahomír Dlabaja";
+		email = "lechaosx@gmail.com";
 	};
 
 	home.stateVersion = "24.11";
