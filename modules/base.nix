@@ -46,8 +46,18 @@
 
 		nix-ld = {
 			enable = true;
-			libraries = [ pkgs.stdenv.cc.cc ];
+			libraries = [ pkgs.stdenv.cc.cc pkgs.zlib ];
 		};
+	};
+
+	services = {
+		envfs.enable = true;
+		swapspace.enable = true;
+	};
+
+	zramSwap = {
+		enable = true;
+		priority = 100;
 	};
 
 	nixpkgs.config.allowUnfree = true;

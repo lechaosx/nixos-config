@@ -18,6 +18,8 @@
 		claude-code
 	];
 
+	home.sessionPath = [ "$HOME/.local/bin" ];
+
 	programs = {
 		vscode = {
 			enable = true;
@@ -26,8 +28,22 @@
 
 		git = {
 			enable = true;
+			lfs.enable = true;
 			signing.format = "openpgp";
 		};
+
+		bash = {
+			enable = true;
+			historySize = 10000;
+			historyControl = [ "ignoredups" "erasedups" ];
+			initExtra = ''
+				PROMPT_COMMAND="history -a"
+			'';
+		};
+
+		uv.enable = true;
+
+		fzf.enable = true;
 	};
 
 	dconf.settings = {

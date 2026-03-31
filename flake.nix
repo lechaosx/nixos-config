@@ -18,7 +18,7 @@
 		};
 
 		homeManagerModules = {
-			base = ./home-manager/base.nix;
+			base = ./home-manager-modules/base.nix;
 		};
 
 		mkHost = name:
