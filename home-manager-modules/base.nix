@@ -44,6 +44,14 @@
 		uv.enable = true;
 
 		fzf.enable = true;
+
+		neovim = {
+			enable = true;
+			defaultEditor = true;
+			extraConfig = ''
+				set number relativenumber
+			'';
+		};
 	};
 
 	dconf.settings = {
