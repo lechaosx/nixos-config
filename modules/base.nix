@@ -42,6 +42,14 @@
 	};
 
 	programs = {
+		nano.enable = false;
+		neovim = {
+			enable = true;
+			vimAlias = true;
+			viAlias = true;
+			defaultEditor = true;
+		};
+
 		firefox.enable = true;
 
 		nix-ld = {
