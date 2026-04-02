@@ -22,11 +22,6 @@
 	home.sessionPath = [ "$HOME/.local/bin" ];
 
 	programs = {
-		vscode = {
-			enable = true;
-			package = pkgs.vscode.fhs;
-		};
-
 		git = {
 			enable = true;
 			lfs.enable = true;
