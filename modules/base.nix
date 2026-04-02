@@ -61,4 +61,21 @@
 	};
 
 	nixpkgs.config.allowUnfree = true;
+
+	fonts.packages = with pkgs; [
+		nerd-fonts.adwaita-mono
+	];
+
+	fonts.fontconfig.localConf = ''
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+<fontconfig>
+  <alias>
+    <family>Adwaita Mono</family>
+    <prefer>
+      <family>AdwaitaMono Nerd Font Mono</family>
+    </prefer>
+  </alias>
+</fontconfig>
+	'';
 }

@@ -65,8 +65,9 @@
 						vim.cmd.colorscheme("catppuccin")
 					'';
 				}
-				# File tree
+				# Icons
 				nvim-web-devicons
+				# File tree
 				{
 					plugin = nvim-tree-lua;
 					type = "lua";
