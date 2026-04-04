@@ -4,7 +4,6 @@
 	home.homeDirectory = "/home/dlabaja";
 
 	home.packages = with pkgs; [
-		ripgrep
 		vlc
 		btop
 		spotify
@@ -40,6 +39,7 @@
 		uv.enable = true;
 
 		fzf.enable = true;
+		ripgrep.enable = true;
 
 		neovim = {
 			enable = true;
@@ -56,7 +56,6 @@
 					plugin = catppuccin-nvim;
 					type = "lua";
 					config = ''
-						require("catppuccin").setup({ flavour = "mocha" })
 						vim.cmd.colorscheme("catppuccin")
 					'';
 				}
@@ -67,10 +66,7 @@
 					plugin = nvim-tree-lua;
 					type = "lua";
 					config = ''
-						require("nvim-tree").setup({
-							view    = { width = 35, side = "left" },
-							filters = { dotfiles = false },
-						})
+						require("nvim-tree").setup()
 						vim.keymap.set("n", "<C-b>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file tree" })
 					'';
 				}
@@ -83,11 +79,7 @@
 					config = ''require("lualine").setup()'';
 				}
 				# Keybinding helper
-				{
-					plugin = which-key-nvim;
-					type = "lua";
-					config = ''require("which-key").setup()'';
-				}
+				which-key-nvim
 				# Fuzzy finder
 				plenary-nvim
 				{
@@ -169,17 +161,26 @@
 			];
 
 			initLua = ''
+				-- Indentation
+				vim.opt.tabstop     = 4
+				vim.opt.shiftwidth  = 4
+
 				-- Line numbers
 				vim.opt.number = true
 				vim.opt.relativenumber = true
 
 				-- 120-char ruler
 				vim.opt.colorcolumn = "120"
-				vim.opt.textwidth = 120
 
 				-- Show whitespace (tabs, trailing spaces, overflow indicators)
 				vim.opt.list = true
 				vim.opt.listchars = { tab = "→ ", trail = "•", nbsp = "○", precedes = "«", extends = "»" }
+
+				-- Disable arrow keys (use hjkl)
+				local no_arrows = { "<Up>", "<Down>", "<Left>", "<Right>" }
+				for _, key in ipairs(no_arrows) do
+					vim.keymap.set({ "n", "i", "v" }, key, "<Nop>", { desc = "Use hjkl" })
+				end
 
 				-- QoL
 				vim.opt.clipboard  = "unnamedplus"
