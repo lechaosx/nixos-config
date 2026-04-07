@@ -229,6 +229,7 @@
 		};
 		"org/gnome/desktop/input-sources" = {
 			sources = [(pkgs.lib.gvariant.mkTuple ["xkb" "us"]) (pkgs.lib.gvariant.mkTuple ["xkb" "cz"])];
+			per-window = true;
 		};
 		"org/gnome/desktop/wm/keybindings" = {
 			switch-input-source = ["<Shift>Alt_L"];
