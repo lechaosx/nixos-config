@@ -75,7 +75,7 @@
 				# Guess indent
 				{ plugin = guess-indent-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/guess-indent.lua; }
 				# Git signs
-				gitsigns-nvim
+				{ plugin = gitsigns-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/gitsigns.lua; }
 				# Mini
 				{ plugin = mini-nvim;         type = "lua"; config = builtins.readFile ./nvim/plugins/mini.lua; }
 				# LSP (data plugin - server configs; behavior is in nvim/init.lua)
