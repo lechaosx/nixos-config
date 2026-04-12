@@ -46,8 +46,9 @@
 			defaultEditor = true;
 
 			extraPackages = with pkgs; [
-				clang-tools  # clangd for C/C++
-				pyright      # Python
+				clang-tools  # clangd + clang-format for C/C++
+				pyright      # Python LSP
+				ruff         # Python formatter
 			];
 
 			plugins = with pkgs.vimPlugins; [
@@ -130,6 +131,24 @@
 				}
 				# LSP (data plugin - server configs; behavior is in initLua)
 				nvim-lspconfig
+				# Formatter
+				{
+					plugin = conform-nvim;
+					type = "lua";
+					config = ''
+						require("conform").setup({
+							formatters_by_ft = {
+								c   = { "clang_format" },
+								cpp = { "clang_format" },
+								python = { "ruff_format" },
+							},
+							format_on_save = { timeout_ms = 500, lsp_format = "fallback" },
+						})
+						vim.keymap.set({ 'n', 'v' }, '<leader>f', function()
+							require("conform").format({ async = true, lsp_format = "fallback" })
+						end, { desc = '[F]ormat buffer' })
+					'';
+				}
 				# TODO comments
 				todo-comments-nvim
 				# Completions
