@@ -82,8 +82,10 @@
 				nvim-lspconfig
 				# Formatter
 				{ plugin = conform-nvim;      type = "lua"; config = builtins.readFile ./nvim/plugins/conform.lua; }
+				# LSP progress spinner
+				{ plugin = fidget-nvim;       type = "lua"; config = builtins.readFile ./nvim/plugins/fidget.lua; }
 				# TODO comments
-				todo-comments-nvim
+				{ plugin = todo-comments-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/todo-comments.lua; }
 				# Completions
 				luasnip
 				{ plugin = blink-cmp;         type = "lua"; config = builtins.readFile ./nvim/plugins/blink.lua; }
