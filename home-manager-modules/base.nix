@@ -5,17 +5,13 @@
 
 	home.packages = with pkgs; [
 		vlc
-		btop
 		spotify
 		jetbrains.clion
 		jetbrains.pycharm
-		remmina
 		gitkraken
 		gnomeExtensions.vitals
-		gcc
 		cmake
 		ninja
-		claude-code
 	];
 
 	home.sessionPath = [ "$HOME/.local/bin" ];
@@ -40,6 +36,10 @@
 
 		fzf.enable = true;
 		ripgrep.enable = true;
+		btop.enable = true;
+		tmux.enable = true;
+		gcc.enable = true;
+		claude-code.enable = true;
 
 		neovim = {
 			enable = true;
@@ -222,6 +222,8 @@
 			'';
 		};
 	};
+
+	services.remmina.enable = true;
 
 	dconf.settings = {
 		"org/gnome/desktop/interface" = {
