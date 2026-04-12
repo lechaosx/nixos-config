@@ -2,16 +2,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Indentation
-vim.opt.tabstop    = 4
-vim.opt.shiftwidth = 4
-
 -- Line numbers
 vim.opt.number         = true
 vim.opt.relativenumber = true
-
--- 120-char ruler
-vim.opt.colorcolumn = "120"
 
 -- Show whitespace (tabs, trailing spaces, overflow indicators)
 vim.opt.list      = true
@@ -36,6 +29,7 @@ vim.opt.updatetime  = 250
 vim.opt.timeoutlen  = 300
 vim.opt.splitright  = true
 vim.opt.splitbelow  = true
+vim.opt.confirm     = true
 vim.opt.inccommand  = 'split'
 vim.opt.clipboard   = "unnamedplus"
 vim.opt.scrolloff   = 8

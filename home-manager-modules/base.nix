@@ -54,6 +54,7 @@
 				lua-language-server   # Lua LSP
 				stylua                # Lua formatter
 				cmake-language-server # CMake LSP
+				nodePackages.markdownlint-cli # Markdown linter
 			];
 
 			plugins = with pkgs.vimPlugins; [
@@ -86,6 +87,8 @@
 				{ plugin = fidget-nvim;       type = "lua"; config = builtins.readFile ./nvim/plugins/fidget.lua; }
 				# TODO comments
 				{ plugin = todo-comments-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/todo-comments.lua; }
+				# Linter
+				{ plugin = nvim-lint; type = "lua"; config = builtins.readFile ./nvim/plugins/lint.lua; }
 				# Completions
 				luasnip
 				{ plugin = blink-cmp;         type = "lua"; config = builtins.readFile ./nvim/plugins/blink.lua; }
