@@ -92,49 +92,6 @@
 						vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 					'';
 				}
-				# Completion
-				cmp-nvim-lsp
-				cmp-buffer
-				cmp-path
-				cmp_luasnip
-				friendly-snippets
-				luasnip
-				{
-					plugin = nvim-cmp;
-					type = "lua";
-					config = ''
-						local cmp     = require("cmp")
-						local luasnip = require("luasnip")
-						require("luasnip.loaders.from_vscode").lazy_load()
-
-						cmp.setup({
-							snippet = {
-								expand = function(args) luasnip.lsp_expand(args.body) end,
-							},
-							mapping = cmp.mapping.preset.insert({
-								["<C-Space>"] = cmp.mapping.complete(),
-								["<C-e>"]     = cmp.mapping.abort(),
-								["<CR>"]      = cmp.mapping.confirm({ select = true }),
-								["<Tab>"] = cmp.mapping(function(fallback)
-									if cmp.visible() then cmp.select_next_item()
-									elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
-									else fallback() end
-								end, { "i", "s" }),
-								["<S-Tab>"] = cmp.mapping(function(fallback)
-									if cmp.visible() then cmp.select_prev_item()
-									elseif luasnip.jumpable(-1) then luasnip.jump(-1)
-									else fallback() end
-								end, { "i", "s" }),
-							}),
-							sources = cmp.config.sources({
-								{ name = "nvim_lsp" },
-								{ name = "luasnip" },
-								{ name = "buffer" },
-								{ name = "path" },
-							}),
-						})
-					'';
-				}
 				# Autopairs
 				{
 					plugin = nvim-autopairs;
@@ -149,6 +106,17 @@
 				}
 				# Gitsigns
 				gitsigns-nvim
+				# Mini
+				{
+					plugin = mini-nvim;
+					type = "lua";
+					config = ''
+						require("mini.ai").setup()
+						require("mini.surround").setup()
+					'';
+				}
+				# TODO comments
+				todo-comments-nvim
 			];
 
 			initLua = ''
@@ -218,39 +186,6 @@
 					desc = 'Highlight when yanking (copying) text',
 					group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
 					callback = function() vim.hl.on_yank() end,
-				})
-
-				-- LSP (neovim 0.11 built-in API)
-				local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-				vim.lsp.config("clangd", {
-					cmd          = { "clangd" },
-					filetypes    = { "c", "cpp", "objc", "objcpp", "cuda" },
-					root_markers = { ".clangd", "compile_commands.json", ".git" },
-					capabilities = capabilities,
-				})
-
-				vim.lsp.config("pyright", {
-					cmd          = { "pyright-langserver", "--stdio" },
-					filetypes    = { "python" },
-					root_markers = { "pyproject.toml", "setup.py", ".git" },
-					capabilities = capabilities,
-				})
-
-				vim.lsp.enable({ "clangd", "pyright" })
-
-				vim.api.nvim_create_autocmd("LspAttach", {
-					callback = function(event)
-						local b = event.buf
-						vim.keymap.set("n", "gd",         vim.lsp.buf.definition,                              { buffer = b, desc = "Go to definition" })
-						vim.keymap.set("n", "gr",         vim.lsp.buf.references,                              { buffer = b, desc = "References" })
-						vim.keymap.set("n", "K",          vim.lsp.buf.hover,                                   { buffer = b, desc = "Hover docs" })
-						vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename,                                  { buffer = b, desc = "Rename symbol" })
-						vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action,                             { buffer = b, desc = "Code action" })
-						vim.keymap.set("n", "<leader>f",  function() vim.lsp.buf.format({ async = true }) end, { buffer = b, desc = "Format file" })
-						vim.keymap.set("n", "[d",         vim.diagnostic.goto_prev,                            { buffer = b, desc = "Prev diagnostic" })
-						vim.keymap.set("n", "]d",         vim.diagnostic.goto_next,                            { buffer = b, desc = "Next diagnostic" })
-					end,
 				})
 			'';
 		};
