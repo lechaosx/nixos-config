@@ -90,6 +90,19 @@
 						vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 						vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
 						vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+						vim.api.nvim_create_autocmd('LspAttach', {
+							group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
+							callback = function(event)
+								local buf = event.buf
+								vim.keymap.set('n', 'grr', builtin.lsp_references,               { buffer = buf, desc = '[G]oto [R]eferences' })
+								vim.keymap.set('n', 'gri', builtin.lsp_implementations,          { buffer = buf, desc = '[G]oto [I]mplementation' })
+								vim.keymap.set('n', 'grd', builtin.lsp_definitions,              { buffer = buf, desc = '[G]oto [D]efinition' })
+								vim.keymap.set('n', 'gO',  builtin.lsp_document_symbols,         { buffer = buf, desc = 'Open Document Symbols' })
+								vim.keymap.set('n', 'gW',  builtin.lsp_dynamic_workspace_symbols,{ buffer = buf, desc = 'Open Workspace Symbols' })
+								vim.keymap.set('n', 'grt', builtin.lsp_type_definitions,         { buffer = buf, desc = '[G]oto [T]ype Definition' })
+							end,
+						})
 					'';
 				}
 				# Autopairs
@@ -115,6 +128,8 @@
 						require("mini.surround").setup()
 					'';
 				}
+				# LSP (data plugin - server configs; behavior is in initLua)
+				nvim-lspconfig
 				# TODO comments
 				todo-comments-nvim
 				# Completions
@@ -187,6 +202,50 @@
 				}
 
 				vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+				-- LSP servers (binaries provided via extraPackages)
+				vim.lsp.enable({ 'clangd', 'pyright' })
+
+				vim.api.nvim_create_autocmd('LspAttach', {
+					group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
+					callback = function(event)
+						local map = function(keys, func, desc, mode)
+							vim.keymap.set(mode or 'n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+						end
+
+						map('grn', vim.lsp.buf.rename,      '[R]e[n]ame')
+						map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+						map('grD', vim.lsp.buf.declaration,  '[G]oto [D]eclaration')
+
+						-- Highlight all references to symbol under cursor
+						local client = vim.lsp.get_client_by_id(event.data.client_id)
+						if client and client:supports_method('textDocument/documentHighlight', event.buf) then
+							local group = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
+							vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+								buffer = event.buf, group = group,
+								callback = vim.lsp.buf.document_highlight,
+							})
+							vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+								buffer = event.buf, group = group,
+								callback = vim.lsp.buf.clear_references,
+							})
+							vim.api.nvim_create_autocmd('LspDetach', {
+								group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
+								callback = function(event2)
+									vim.lsp.buf.clear_references()
+									vim.api.nvim_clear_autocmds({ group = 'lsp-highlight', buffer = event2.buf })
+								end,
+							})
+						end
+
+						-- Toggle inlay hints (e.g. parameter names, return types)
+						if client and client:supports_method('textDocument/inlayHint', event.buf) then
+							map('<leader>th', function()
+								vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+							end, '[T]oggle Inlay [H]ints')
+						end
+					end,
+				})
 
 				-- Highlight when yanking (copying) text
 				vim.api.nvim_create_autocmd('TextYankPost', {
