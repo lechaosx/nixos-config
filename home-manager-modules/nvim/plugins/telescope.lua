@@ -12,6 +12,10 @@ vim.keymap.set('n', '<leader>s.', builtin.oldfiles,    { desc = '[S]earch Recent
 vim.keymap.set('n', '<leader>sc', builtin.commands,    { desc = '[S]earch [C]ommands' })
 vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+vim.keymap.set('n', '<leader>sn', function() builtin.find_files({ cwd = vim.fn.stdpath('config') }) end, { desc = '[S]earch [N]eovim files' })
+vim.keymap.set('n', '<leader>s/', function()
+	builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({ winblend = 10, previewer = false }))
+end, { desc = '[S]earch [/] in current buffer' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
 	group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),

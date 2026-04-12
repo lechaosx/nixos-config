@@ -66,7 +66,7 @@
 				# Status bar
 				{ plugin = lualine-nvim;      type = "lua"; config = builtins.readFile ./nvim/plugins/lualine.lua; }
 				# Keybinding helper
-				which-key-nvim
+				{ plugin = which-key-nvim;    type = "lua"; config = builtins.readFile ./nvim/plugins/which-key.lua; }
 				# Fuzzy finder
 				plenary-nvim
 				{ plugin = telescope-nvim;    type = "lua"; config = builtins.readFile ./nvim/plugins/telescope.lua; }
