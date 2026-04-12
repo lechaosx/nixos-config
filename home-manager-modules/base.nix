@@ -46,9 +46,14 @@
 			defaultEditor = true;
 
 			extraPackages = with pkgs; [
-				clang-tools  # clangd + clang-format for C/C++
-				pyright      # Python LSP
-				ruff         # Python formatter
+				clang-tools           # clangd + clang-format for C/C++
+				pyright               # Python LSP
+				ruff                  # Python formatter
+				nixd                  # Nix LSP
+				alejandra             # Nix formatter
+				lua-language-server   # Lua LSP
+				stylua                # Lua formatter
+				cmake-language-server # CMake LSP
 			];
 
 			plugins = with pkgs.vimPlugins; [
@@ -141,6 +146,8 @@
 								c   = { "clang_format" },
 								cpp = { "clang_format" },
 								python = { "ruff_format" },
+								nix    = { "alejandra" },
+								lua    = { "stylua" },
 							},
 							format_on_save = { timeout_ms = 500, lsp_format = "fallback" },
 						})
@@ -223,7 +230,7 @@
 				vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 				-- LSP servers (binaries provided via extraPackages)
-				vim.lsp.enable({ 'clangd', 'pyright' })
+				vim.lsp.enable({ 'clangd', 'pyright', 'nixd', 'lua_ls', 'cmake' })
 
 				vim.api.nvim_create_autocmd('LspAttach', {
 					group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
