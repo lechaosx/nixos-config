@@ -117,6 +117,13 @@
 				}
 				# TODO comments
 				todo-comments-nvim
+				# Completions
+				luasnip
+				{
+					plugin = blink-cmp;
+					type = "lua";
+					config = ''require("blink.cmp").setup({})'';
+				}
 			];
 
 			initLua = ''
