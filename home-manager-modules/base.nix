@@ -61,15 +61,6 @@
 				}
 				# Icons
 				nvim-web-devicons
-				# File tree
-				{
-					plugin = nvim-tree-lua;
-					type = "lua";
-					config = ''
-						require("nvim-tree").setup()
-						vim.keymap.set("n", "<C-b>", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file tree" })
-					'';
-				}
 				# Syntax highlighting
 				nvim-treesitter.withAllGrammars
 				# Status bar
@@ -88,10 +79,17 @@
 					config = ''
 						local builtin = require("telescope.builtin")
 						require("telescope").setup()
-						vim.keymap.set("n", "<C-p>",      builtin.find_files,  { desc = "Find files" })
-						vim.keymap.set("n", "<C-S-f>",    builtin.live_grep,   { desc = "Search in files" })
-						vim.keymap.set("n", "<leader>fb", builtin.buffers,     { desc = "Find buffers" })
-						vim.keymap.set("n", "<leader>fr", builtin.oldfiles,    { desc = "Recent files" })
+						vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+						vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
+						vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+						vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
+						vim.keymap.set({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+						vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+						vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+						vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
+						vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+						vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
+						vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 					'';
 				}
 				# Completion
@@ -137,30 +135,27 @@
 						})
 					'';
 				}
-				# Editor helpers
+				# Autopairs
 				{
 					plugin = nvim-autopairs;
 					type = "lua";
 					config = ''require("nvim-autopairs").setup()'';
 				}
+				# Guess indent
 				{
-					plugin = bufferline-nvim;
+					plugin = guess-indent-nvim;
 					type = "lua";
-					config = ''
-						require("bufferline").setup({ options = { diagnostics = "nvim_lsp" } })
-						vim.keymap.set("n", "<Tab>",     "<cmd>BufferLineCycleNext<CR>", { desc = "Next buffer" })
-						vim.keymap.set("n", "<S-Tab>",   "<cmd>BufferLineCyclePrev<CR>", { desc = "Prev buffer" })
-						vim.keymap.set("n", "<leader>x", "<cmd>bdelete<CR>",             { desc = "Close buffer" })
-					'';
+					config = ''require("guess-indent").setup()'';
 				}
-				{
-					plugin = comment-nvim;
-					type = "lua";
-					config = ''require("Comment").setup()'';
-				}
+				# Gitsigns
+				gitsigns-nvim
 			];
 
 			initLua = ''
+				-- Leader key
+				vim.g.mapleader = ' '
+				vim.g.maplocalleader = ' '
+
 				-- Indentation
 				vim.opt.tabstop     = 4
 				vim.opt.shiftwidth  = 4
@@ -181,11 +176,49 @@
 				for _, key in ipairs(no_arrows) do
 					vim.keymap.set({ "n", "i", "v" }, key, "<Nop>", { desc = "Use hjkl" })
 				end
+				
+				vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 				-- QoL
+				vim.opt.mouse = a
+				vim.opt.showmode = false
+				vim.opt.breakindent = true
+				vim.opt.undofile = true
+				vim.opt.ignorecase = true
+				vim.opt.smartcase = true
+				vim.opt.signcolumn = "yes"
+				vim.opt.updatetime = 250
+				vim.opt.timeoutlen = 300
+				vim.opt.splitright = true
+				vim.opt.splitbelow = true
+				vim.opt.inccommand = 'split'
 				vim.opt.clipboard  = "unnamedplus"
 				vim.opt.scrolloff  = 8
 				vim.opt.cursorline = true
+
+				-- Diagnostic Config & Keymaps
+				vim.diagnostic.config {
+					update_in_insert = false,
+					severity_sort = true,
+					float = { border = 'rounded', source = 'if_many' },
+					underline = { severity = { min = vim.diagnostic.severity.WARN } },
+
+					-- Can switch between these as you prefer
+					virtual_text = true, -- Text shows up at the end of the line
+					virtual_lines = false, -- Text shows up underneath the line, with virtual lines
+
+					-- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
+					jump = { float = true },
+				}
+
+				vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+				-- Highlight when yanking (copying) text
+				vim.api.nvim_create_autocmd('TextYankPost', {
+					desc = 'Highlight when yanking (copying) text',
+					group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+					callback = function() vim.hl.on_yank() end,
+				})
 
 				-- LSP (neovim 0.11 built-in API)
 				local capabilities = require("cmp_nvim_lsp").default_capabilities()
