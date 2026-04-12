@@ -96,7 +96,7 @@
 				{ plugin = blink-cmp;         type = "lua"; config = builtins.readFile ./nvim/plugins/blink.lua; }
 			];
 
-			extraLuaConfig = builtins.readFile ./nvim/init.lua;
+			initLua = builtins.readFile ./nvim/init.lua;
 		};
 	};
 
