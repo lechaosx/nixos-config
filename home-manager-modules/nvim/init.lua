@@ -21,6 +21,8 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.opt.mouse       = 'a'
 vim.opt.showmode    = false
 vim.opt.breakindent = true
+vim.opt.tabstop     = 4
+vim.opt.shiftwidth  = 4
 vim.opt.undofile    = true
 vim.opt.ignorecase  = true
 vim.opt.smartcase   = true
