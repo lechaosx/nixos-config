@@ -44,6 +44,8 @@
 		neovim = {
 			enable        = true;
 			defaultEditor = true;
+			withRuby      = false;
+			withPython3   = false;
 
 			extraPackages = with pkgs; [
 				clang-tools           # clangd + clang-format for C/C++
@@ -54,7 +56,7 @@
 				lua-language-server   # Lua LSP
 				stylua                # Lua formatter
 				cmake-language-server # CMake LSP
-				nodePackages.markdownlint-cli # Markdown linter
+				markdownlint-cli # Markdown linter
 			];
 
 			plugins = with pkgs.vimPlugins; [
