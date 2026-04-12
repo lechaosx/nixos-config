@@ -1,5 +1,11 @@
 local builtin = require("telescope.builtin")
-require("telescope").setup()
+require("telescope").setup({
+	extensions = {
+		['ui-select'] = { require('telescope.themes').get_dropdown() },
+	},
+})
+
+require('telescope').load_extension('ui-select')
 
 vim.keymap.set('n', '<leader>sh', builtin.help_tags,   { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sk', builtin.keymaps,     { desc = '[S]earch [K]eymaps' })

@@ -72,6 +72,7 @@
 				{ plugin = which-key-nvim;    type = "lua"; config = builtins.readFile ./nvim/plugins/which-key.lua; }
 				# Fuzzy finder
 				plenary-nvim
+				telescope-ui-select-nvim
 				{ plugin = telescope-nvim;    type = "lua"; config = builtins.readFile ./nvim/plugins/telescope.lua; }
 				# Autopairs
 				{ plugin = nvim-autopairs;    type = "lua"; config = builtins.readFile ./nvim/plugins/autopairs.lua; }
