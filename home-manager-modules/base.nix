@@ -26,7 +26,7 @@
 		bash = {
 			enable = true;
 			historySize = 10000;
-			historyControl = [ "ignoredups" "erasedups" ];
+			historyControl = [ "ignoreboth" "erasedups" ];
 			initExtra = ''
 				PROMPT_COMMAND="history -a"
 			'';
