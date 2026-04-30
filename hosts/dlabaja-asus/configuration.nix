@@ -6,6 +6,7 @@
 		customModules.desktop
 		customModules.gaming
 		customModules.grub
+		customModules.docker
 	];
 
 	grub.gfxmodeEfi = "1920x1200x32";
