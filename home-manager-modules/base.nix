@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 	home.username = "dlabaja";
 	home.homeDirectory = "/home/dlabaja";
@@ -12,6 +12,8 @@
 		gnomeExtensions.vitals
 		cmake
 		ninja
+		difftastic
+		mergiraf
 	];
 
 	home.sessionPath = [ "$HOME/.local/bin" ];
@@ -21,6 +23,35 @@
 			enable = true;
 			lfs.enable = true;
 			signing.format = "openpgp";
+
+			# IFD: runs mergiraf at build time to get the up-to-date list of
+			# supported extensions, so we never have to maintain it manually
+			attributes =
+				(lib.filter (s: s != "")
+					(lib.splitString "\n"
+						(builtins.readFile (pkgs.runCommand "mergiraf-gitattributes" {
+							buildInputs = [ pkgs.mergiraf ];
+						} ''
+							mergiraf languages --gitattributes > $out
+						''))))
+				++ [
+					# custom attributes
+				];
+
+			settings = {
+				alias = {
+					ddiff = "-c diff.external=difft diff";
+					dlog  = "-c diff.external=difft log -p --ext-diff";
+					dshow = "-c diff.external=difft show --ext-diff";
+				};
+				merge = {
+					conflictStyle = "diff3";
+					mergiraf = {
+						name = "mergiraf";
+						driver = "mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
+					};
+				};
+			};
 		};
 
 		bash = {
@@ -99,6 +130,10 @@
 
 			initLua = builtins.readFile ./nvim/init.lua;
 		};
+	};
+
+	home.sessionVariables = {
+		DFT_GRAPH_LIMIT = "4294967295";
 	};
 
 	services.remmina.enable = true;
