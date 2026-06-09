@@ -45,7 +45,7 @@
 					dshow = "-c diff.external=difft show --ext-diff";
 				};
 				merge = {
-					conflictStyle = "diff3";
+					conflictStyle = "zdiff3";
 					mergiraf = {
 						name = "mergiraf";
 						driver = "mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
