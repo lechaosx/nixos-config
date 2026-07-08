@@ -40,7 +40,7 @@
 	users.users.dlabaja = {
 		isNormalUser = true;
 		description = "Drahomír Dlabaja";
-		extraGroups = [ "networkmanager" "wheel" ];
+		extraGroups = [ "networkmanager" "wheel" "docker" ];
 	};
 
 	programs = {
