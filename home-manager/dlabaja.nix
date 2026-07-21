@@ -1,18 +1,22 @@
-{ pkgs, customModules, ... }:
 {
-	imports = [ customModules.base ];
+  pkgs,
+  customModules,
+  ...
+}: {
+  imports = [customModules.base];
 
-	home.packages = with pkgs; [
-		discord
-		transmission_4-qt
-		aseprite
-		lua
-	];
+  home.packages = with pkgs; [
+    discord
+    transmission_4-qt
+    aseprite
+    lua
+    codex
+  ];
 
-	programs.git.settings.user = {
-		name = "Drahomír Dlabaja";
-		email = "lechaosx@gmail.com";
-	};
+  programs.git.settings.user = {
+    name = "Drahomír Dlabaja";
+    email = "lechaosx@gmail.com";
+  };
 
-	home.stateVersion = "24.11";
+  home.stateVersion = "24.11";
 }
