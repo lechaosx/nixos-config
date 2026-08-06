@@ -54,10 +54,7 @@
 
 		firefox.enable = true;
 
-		nix-ld = {
-			enable = true;
-			libraries = [ pkgs.stdenv.cc.cc pkgs.zlib ];
-		};
+		nix-ld.enable = true;
 	};
 
 	services = {
