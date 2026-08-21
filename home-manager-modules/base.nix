@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
 {
+	imports = [ ./ai ];
+
 	home.username = "dlabaja";
 	home.homeDirectory = "/home/dlabaja";
 
@@ -70,8 +72,6 @@
 		btop.enable = true;
 		tmux.enable = true;
 		gcc.enable = true;
-		claude-code.enable = true;
-
 		neovim = {
 			enable        = true;
 			defaultEditor = true;

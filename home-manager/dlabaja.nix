@@ -10,7 +10,6 @@
     transmission_4-qt
     aseprite
     lua
-    codex
   ];
 
   programs.git.settings.user = {
