@@ -3,7 +3,11 @@
   customModules,
   ...
 }: {
-  imports = [customModules.base];
+  imports = [
+    customModules.base
+    customModules.claude-code
+    customModules.codex
+  ];
 
   home.packages = with pkgs; [
     discord

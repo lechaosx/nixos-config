@@ -3,7 +3,7 @@
 	programs.codex.enable = true;
 
 	home.file.".codex/AGENTS.md" = {
-		source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/AGENTS.md";
+		source = ./AGENTS.md;
 		force = true;
 	};
 

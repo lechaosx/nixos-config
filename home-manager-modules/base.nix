@@ -1,7 +1,5 @@
 { pkgs, lib, ... }:
 {
-	imports = [ ./ai ];
-
 	home.username = "dlabaja";
 	home.homeDirectory = "/home/dlabaja";
 

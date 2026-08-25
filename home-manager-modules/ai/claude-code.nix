@@ -13,7 +13,7 @@
 			force = true;
 		};
 		".claude/CLAUDE.md" = {
-			source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/AGENTS.md";
+			source = ./AGENTS.md;
 			force = true;
 		};
 	};

@@ -19,6 +19,8 @@
 
 		homeManagerModules = {
 			base = ./home-manager-modules/base.nix;
+			claude-code = ./home-manager-modules/ai/claude-code.nix;
+			codex = ./home-manager-modules/ai/codex.nix;
 		};
 
 		mkHost = name:
