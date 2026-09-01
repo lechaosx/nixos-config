@@ -70,6 +70,14 @@
 		btop.enable = true;
 		tmux.enable = true;
 		gcc.enable = true;
+
+		ghostty = {
+			enable = true;
+			settings = {
+				font-size = "8.8";
+			};
+		};
+
 		neovim = {
 			enable        = true;
 			defaultEditor = true;
@@ -147,6 +155,15 @@
 		"org/gnome/desktop/wm/keybindings" = {
 			switch-input-source = ["<Shift>Alt_L"];
 			switch-input-source-backward = ["<Alt>Shift_L"];
+		};
+		# Copilot key emits Super+Shift+F23
+		"org/gnome/settings-daemon/plugins/media-keys" = {
+			custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal/" ];
+		};
+		"org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal" = {
+			name = "Launch Terminal";
+			binding = "<Super><Shift>F23";
+			command = "xdg-terminal-exec";
 		};
 		"org/gnome/desktop/wm/preferences" = {
 			button-layout = "appmenu:minimize,maximize,close";

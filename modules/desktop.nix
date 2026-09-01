@@ -39,6 +39,11 @@ in
 
 	security.rtkit.enable = true;
 
+	xdg.terminal-exec = {
+		enable = true;
+		settings.GNOME = [ "com.mitchellh.ghostty.desktop" ];
+	};
+
 	# WirePlumber probes card profiles as a user unit, before any shell profile is
 	# sourced, so the variable has to come from the user manager itself.
 	systemd.user.settings.Manager.DefaultEnvironment = "ALSA_CONFIG_DIR=${alsaConfigDir}";
