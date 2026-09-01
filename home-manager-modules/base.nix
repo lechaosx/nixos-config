@@ -65,6 +65,7 @@
 
 		uv.enable = true;
 
+		direnv.enable = true;
 		fzf.enable = true;
 		ripgrep.enable = true;
 		btop.enable = true;
