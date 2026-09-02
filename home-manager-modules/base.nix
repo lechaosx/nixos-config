@@ -74,7 +74,13 @@
 			'';
 		};
 
-		fish.enable = true;
+		fish = {
+			enable = true;
+
+			interactiveShellInit = ''
+				set -g fish_prompt_pwd_dir_length 0
+			'';
+		};
 
 		starship = {
 			enable = true;
