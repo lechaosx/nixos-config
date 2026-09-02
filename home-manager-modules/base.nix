@@ -76,7 +76,13 @@
 
 		fish.enable = true;
 
-		starship.enable = true;
+		starship = {
+			enable = true;
+			settings = {
+				add_newline = false;
+				line_break.disabled = true;
+			};
+		};
 
 		uv.enable = true;
 
