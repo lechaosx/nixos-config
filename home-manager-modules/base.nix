@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
 {
+	imports = [ ./prompt.nix ];
+
 	home.username = "dlabaja";
 	home.homeDirectory = "/home/dlabaja";
 
@@ -77,19 +79,20 @@
 		fish = {
 			enable = true;
 
-			interactiveShellInit = ''
-				set -g fish_prompt_pwd_dir_length 0
+			# Copied from fish's default so the path stays unshortened: it calls
+			# `prompt_pwd -d 1 -D 1`, and those literal flags win over
+			# fish_prompt_pwd_dir_length
+			functions.fish_title = ''
+				set -l ssh
+				set -q SSH_TTY
+				and set ssh "["(prompt_hostname | string sub -l 10 | string collect)"]"
+				set -l command $argv[1]
+				if not set -q argv[1]
+					set command (status current-command)
+					test "$command" = fish; and set command
+				end
+				echo -- $ssh (string sub -l 20 -- $command) (prompt_pwd -d 0)
 			'';
-		};
-
-		starship = {
-			enable = true;
-			settings = {
-				add_newline = false;
-				directory.truncation_length = 0;
-				directory.truncate_to_repo = false;
-				line_break.disabled = true;
-			};
 		};
 
 		uv.enable = true;
