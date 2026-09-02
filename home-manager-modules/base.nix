@@ -76,6 +76,8 @@
 
 		fish.enable = true;
 
+		starship.enable = true;
+
 		uv.enable = true;
 
 		direnv = {
