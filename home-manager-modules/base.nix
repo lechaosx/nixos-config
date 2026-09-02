@@ -80,6 +80,7 @@
 			enable = true;
 			settings = {
 				add_newline = false;
+				directory.truncation_length = 0;
 				line_break.disabled = true;
 			};
 		};
