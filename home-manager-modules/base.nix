@@ -65,7 +65,11 @@
 
 		uv.enable = true;
 
-		direnv.enable = true;
+		direnv = {
+			enable = true;
+			nix-direnv.enable = true;
+		};
+
 		fzf.enable = true;
 		ripgrep.enable = true;
 		btop.enable = true;
