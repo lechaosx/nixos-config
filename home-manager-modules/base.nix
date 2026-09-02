@@ -74,6 +74,8 @@
 			'';
 		};
 
+		fish.enable = true;
+
 		uv.enable = true;
 
 		direnv = {
@@ -92,6 +94,7 @@
 			enable = true;
 			settings = {
 				font-size = "8.8";
+				shell-integration-features = "ssh-env,ssh-terminfo";
 			};
 		};
 

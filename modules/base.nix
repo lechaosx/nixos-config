@@ -41,10 +41,15 @@
 		isNormalUser = true;
 		description = "Drahomír Dlabaja";
 		extraGroups = [ "networkmanager" "wheel" "docker" ];
+		shell = pkgs.fish;
 	};
 
 	programs = {
 		nano.enable = false;
+
+		# Also needed at system level: registers /etc/shells and the vendor
+		# completion paths that system packages install into
+		fish.enable = true;
 		neovim = {
 			enable = true;
 			vimAlias = true;
