@@ -2,6 +2,9 @@
 {
 	programs.claude-code.enable = true;
 
+	# statusline-command.sh runs python3 off PATH
+	home.packages = [ pkgs.python3 ];
+
 	home.file = {
 		".claude/statusline-command.sh" = {
 			source = ./statusline-command.sh;

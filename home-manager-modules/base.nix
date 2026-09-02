@@ -23,6 +23,17 @@
 			enable = true;
 			lfs.enable = true;
 			signing.format = "openpgp";
+			ignores = [
+				".direnv/"
+				".envrc.local"
+				".idea/"
+				".vscode/"
+				".venv/"
+				"__pycache__/"
+				"CMakeUserPresets.json"
+				".output.txt"
+				"*local.json"
+			];
 
 			# IFD: runs mergiraf at build time to get the up-to-date list of
 			# supported extensions, so we never have to maintain it manually
@@ -68,6 +79,7 @@
 		direnv = {
 			enable = true;
 			nix-direnv.enable = true;
+			silent = true;
 		};
 
 		fzf.enable = true;
