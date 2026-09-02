@@ -87,6 +87,7 @@
 			settings = {
 				add_newline = false;
 				directory.truncation_length = 0;
+				directory.truncate_to_repo = false;
 				line_break.disabled = true;
 			};
 		};
