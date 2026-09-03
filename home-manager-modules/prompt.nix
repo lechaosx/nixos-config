@@ -22,7 +22,6 @@ in
 	programs = {
 		starship = {
 			enable = true;
-			enableTransience = true;
 			presets = [ "nerd-font-symbols" ];
 
 			# IFD: reads starship's own no-runtime-versions preset for the list of
@@ -38,7 +37,6 @@ in
 						[ "$schema" ])
 					++ [ "nix_shell" "docker_context" ])
 				(_: { format = "[$symbol](overlay0)"; })) // {
-				add_newline = false;
 				palette = "catppuccin_mocha";
 
 				# Language modules reach the prompt through $all, styled for the pill
@@ -46,14 +44,7 @@ in
 				# Styled after ai/statusline.py: no backgrounds, dim glyph and brighter
 				# value, groups three spaces apart, and hue only where something is
 				# worth looking at - so the row is grey at rest
-				# The leading $line_break is what add_newline would do, but
-				# add_newline also applies to profile renders, which would put a
-				# blank line above every transient prompt in the scrollback.
-				format = "$line_break($git_branch$git_commit$git_state$git_status   )($all   )($time)(   \${env_var.STARSHIP_ELAPSED})$line_break$username$hostname$directory$character";
-
-				# Rendered by starship_transient_prompt_func once a command is submitted.
-				# The leading break is what separates entries in the scrollback
-				profiles.transient = "$line_break$username$hostname$directory$character";
+				format = "($git_branch$git_commit$git_state$git_status   )($all   )($time)(   $cmd_duration)$line_break$username$hostname$directory$character";
 
 				username = {
 					show_always = true;
@@ -117,15 +108,8 @@ in
 					diverged = "↕";
 				};
 
-				# How long the last command took, stamped with when it finished - both
-				# describe the previous command, so they read as one item. The value is
-				# precomputed by __starship_elapsed because starship's own $duration is
-				# a single token with no separator control
-				cmd_duration.disabled = true;
-
-				env_var.STARSHIP_ELAPSED = {
-					variable = "STARSHIP_ELAPSED";
-					format = "[${g.elapsed} ](overlay0)[$env_value](subtext0)";
+				cmd_duration = {
+					format = "[${g.elapsed} ](overlay0)[$duration](subtext0)";
 				};
 
 				jobs = {
@@ -182,30 +166,6 @@ in
 					crust = "#11111b";
 				};
 			};
-		};
-
-		fish = {
-			# Defined here rather than in fish.functions: an --on-event handler in the
-			# autoload path is never registered, because nothing loads the file
-			interactiveShellInit = ''
-				function __starship_elapsed --on-event fish_postexec
-					set -l parts
-					set -l h (math -s0 "floor($CMD_DURATION / 3600000)")
-					set -l m (math -s0 "floor($CMD_DURATION / 60000) % 60")
-					set -l s (math -s0 "floor($CMD_DURATION / 1000) % 60")
-					set -l ms (math -s0 "$CMD_DURATION % 1000")
-					test $h -gt 0; and set -a parts "$h"h
-					test $m -gt 0; and set -a parts "$m"m
-					test $s -gt 0; and set -a parts "$s"s
-					test $ms -gt 0; and set -a parts "$ms"ms
-					test (count $parts) -eq 0; and set parts 0ms
-					set -gx STARSHIP_ELAPSED (string join " " $parts)
-				end
-			'';
-
-			functions.starship_transient_prompt_func = ''
-				starship prompt --profile transient $argv
-			'';
 		};
 	};
 }
