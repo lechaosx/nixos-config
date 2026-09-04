@@ -15,6 +15,7 @@
 			gaming  = ./modules/gaming.nix;
 			grub    = ./modules/grub.nix;
 			docker  = ./modules/docker.nix;
+			podman  = ./modules/podman.nix;
 		};
 
 		homeManagerModules = {
