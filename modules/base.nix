@@ -3,16 +3,14 @@
 	boot.kernelPackages = pkgs.linuxPackages_latest;
 
 	nix = {
-		settings = {
-			auto-optimise-store = true;
-			experimental-features = [ "nix-command" "flakes" ];
-		};
+		settings.experimental-features = [ "nix-command" "flakes" ];
+		optimise.automatic = true;
+	};
 
-		gc = {
-			automatic = true;
-			dates = "weekly";
-			options = "--delete-older-than 1w";
-		};
+	# nix.gc can only expire generations by age; nh expires by count.
+	programs.nh.clean = {
+		enable = true;
+		extraArgs = "--keep 3 --keep-one";
 	};
 
 	time.timeZone = "Europe/Prague";
