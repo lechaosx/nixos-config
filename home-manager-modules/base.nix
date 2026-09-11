@@ -155,6 +155,11 @@
 				{ plugin = nvim-autopairs;    type = "lua"; config = builtins.readFile ./nvim/plugins/autopairs.lua; }
 				# Guess indent
 				{ plugin = guess-indent-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/guess-indent.lua; }
+				# Motion training
+				{ plugin = precognition-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/precognition.lua; }
+				nui-nvim
+				{ plugin = hardtime-nvim;      type = "lua"; config = builtins.readFile ./nvim/plugins/hardtime.lua; }
+				vim-be-good
 				# Git signs
 				{ plugin = gitsigns-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/gitsigns.lua; }
 				# Mini

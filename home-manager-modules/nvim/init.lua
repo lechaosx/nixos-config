@@ -10,11 +10,6 @@ vim.opt.relativenumber = true
 vim.opt.list      = true
 vim.opt.listchars = { tab = "→ ", trail = "•", nbsp = "○", precedes = "«", extends = "»" }
 
--- Disable arrow keys (use hjkl)
-for _, key in ipairs({ "<Up>", "<Down>", "<Left>", "<Right>" }) do
-	vim.keymap.set({ "n", "i", "v" }, key, "<Nop>", { desc = "Use hjkl" })
-end
-
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- QoL
