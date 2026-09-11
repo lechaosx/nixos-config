@@ -79,6 +79,8 @@
 		fish = {
 			enable = true;
 
+			functions.fish_greeting = "fastfetch";
+
 			# Copied from fish's default so the path stays unshortened: it calls
 			# `prompt_pwd -d 1 -D 1`, and those literal flags win over
 			# fish_prompt_pwd_dir_length
