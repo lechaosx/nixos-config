@@ -1,24 +1,39 @@
 <!-- Managed by Home Manager; edit home-manager-modules/ai/AGENTS.md in nixos-config, not the deployed file. -->
 
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+
 ## 1. Think Before Coding
 
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
+- State your assumptions explicitly, including the ones you acted on instead of asking about.
+- Ask when the readings diverge. If two interpretations would lead to materially different work, put
+  both to me rather than picking one silently. If they converge, pick one, name it, and keep going.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
+- Don't hide a blocker. If something is genuinely unclear and no assumption makes the work safe or
+  useful, stop and name what's confusing.
 
 ## 2. Simplicity First
 
-**Minimum code that solves the problem. Nothing speculative.**
+**Minimum resulting code that solves the problem. Nothing speculative.**
 
 - No features beyond what was asked.
 - No abstractions for single-use code.
 - No "flexibility" or "configurability" that wasn't requested.
 - No error handling for impossible scenarios.
 - If you write 200 lines and it could be 50, rewrite it.
+
+**Defer abstraction.** Start at the lowest practical level and keep code concrete and local while
+requirements are still changing. Let patterns emerge before introducing an abstraction: it must have
+demonstrated semantic merit, not merely make the current code look organized. Make architectural
+decisions at the latest practical moment, when concrete constraints justify them.
+
+**Prefer WET until reuse is established.** Keep an implementation local until the same reusable need
+appears more than twice. Extract shared code only when the functionality is semantically general and
+valuable on its own, not merely because two places currently look alike. Account for the coupling
+shared code introduces: common components should represent stable concepts that are unlikely to
+change with any one caller.
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
@@ -70,6 +85,15 @@ For bug fixes and testable behavioral changes, work test-first in this direction
 
 Never write the fix first and the test after. If the test infra is slow/unavailable, say so explicitly rather than skipping the red step.
 
+What earns a test: observable behavior, compatibility boundaries, deterministic calculations, and
+regressions likely to recur — anything exercisable through a stable interface at reasonable cost.
+
+What does not: assertions that search source text, pin private names or structure, or encode
+subjective visual tuning. They obstruct implementation changes without protecting product behavior.
+Never duplicate production logic in a test solely to make an implementation detail testable.
+Documentation, formatting, metadata, and compile-only changes do not require a contrived failing
+test; run the smallest relevant verification after the change.
+
 For multi-step tasks, state a brief plan:
 ```
 1. [Step] → verify: [check]
@@ -79,39 +103,11 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-## 5. Don't Background What You Just Wait On
-
-**Only run a command in the background if you'll do other useful work in parallel.**
-
-- For a single long build/test/command whose result the next step needs, run it in the foreground and wait.
-- Don't background a command and then immediately poll/wait on it doing nothing else - it's pointless notification noise.
-- Background is for genuine parallelism or a long-lived watcher the user wants detached.
-
-## 6. Git Commits
+## 5. Git Commits
 
 - Do not add AI-agent or vendor attribution to commit messages, including `Co-Authored-By` trailers.
 - Keep commit messages strictly factual - describe what changed, no speculative or unverified claims.
 
-## 7. Defer Abstraction
-
-- Start at the lowest practical level of abstraction and keep code concrete and local while requirements are still changing.
-- Let patterns emerge before introducing abstractions. An abstraction must have demonstrated semantic merit, not merely make the current code look organized.
-- Make architectural decisions at the latest practical moment, when concrete constraints justify them.
-
-## 8. Prefer WET Until Reuse Is Established
-
-- Keep an implementation local until the same reusable need appears more than twice.
-- Extract shared code only when the functionality is semantically general and valuable on its own, not merely because two places currently look alike.
-- Account for the coupling introduced by shared code. Common components should represent stable concepts that are unlikely to change with any one caller.
-
-## 9. Test Observable Risk
-
-- Use red-green TDD for bug fixes and for behavior or contracts that can be exercised through a stable interface at reasonable cost. Confirm that the new test fails for the intended reason before implementing the change.
-- Add tests for observable behavior, compatibility boundaries, deterministic calculations, and regressions that are likely to recur.
-- Do not add tests whose primary assertion searches source text, pins private names or structure, or encodes subjective visual tuning. Such tests obstruct implementation changes without protecting product behavior.
-- Documentation, formatting, metadata, and compile-only changes do not require a contrived failing test. Run the smallest relevant verification after the change.
-- Do not duplicate production logic in a test solely to make an implementation detail testable.
-
-## 10. NixOS Environment
+## 6. NixOS Environment
 
 - This is a NixOS system. If a needed program is unavailable in the current shell, use `nix develop`, `nix run`, or `nix shell` to run it.
