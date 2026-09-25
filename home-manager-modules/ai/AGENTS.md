@@ -53,7 +53,7 @@ When your changes create orphans:
 
 The test: Every changed line should trace directly to the user's request.
 
-**Comments must say something the code cannot.** This is the one test, and it governs everything written for someone who was not there — comments, docstrings, READMEs, help text, and equally issues, MR descriptions, runbooks and commit messages. Each earns its place only if it carries information the reader cannot recover from the thing itself. All of it is read later without the ticket, the prompt, or your reasoning in view: the reader has the artifact and nothing else — not the conversation, not your earlier draft, not the position you argued yourself out of an hour ago. Apply the test at write-time and delete anything that fails it. These five kinds fail — the last four are the ones that slip through even when you think you're following this rule, so watch for them specifically:
+**Comments must say something the code cannot.** This is the one test, and it governs everything written for someone who was not there — comments, docstrings, READMEs, help text, and equally issues, MR descriptions, runbooks and commit messages. Each earns its place only if it carries information the reader cannot recover from the thing itself. All of it is read later without the ticket, the prompt, or your reasoning in view: the reader has the artifact and nothing else — not the conversation, not your earlier draft, not the position you argued yourself out of an hour ago. Apply the test at write-time and delete anything that fails it. These five kinds fail. The last four pass a quick read, so check for each by name:
 
 - **Task-context** — only parses if you saw the ticket/prompt/conversation. The reader didn't. E.g. `// Unlike usernameAvailable, this ignores whether the account exists` — meaningful only against the issue's framing. Its sharpest form is publishing your own correction: you believed X, learned not-X, and wrote not-X down. The reader never believed X — ship the corrected fact and say nothing about the correction.
 - **Reasoning-path** — the story of how you arrived here: alternatives tried, roads not taken, why you did *less* than expected. This is your PR description leaking into the file. The destination may matter; the path there almost never does. E.g. "mtd exposes no configured-max series, but the alert fires relative to the pool's own max, so no hardcoded threshold is needed."
@@ -78,12 +78,12 @@ Transform tasks into verifiable goals:
 - "Refactor X" → "Ensure tests pass before and after"
 
 For bug fixes and testable behavioral changes, work test-first in this direction (red → green):
-1. Write the test BEFORE the implementation/fix.
-2. RUN it and confirm it FAILS — and fails for the *right reason* (asserting the real behavior, not a typo/setup error). A test that was never seen red proves nothing.
+1. Write the test before the implementation/fix.
+2. Run it and confirm it fails — and fails for the *right reason* (asserting the real behavior, not a typo/setup error). A test that was never seen red proves nothing.
 3. Only then write the minimal code to make it pass.
-4. RUN again and confirm green.
+4. Run again and confirm green.
 
-Never write the fix first and the test after. If the test infra is slow/unavailable, say so explicitly rather than skipping the red step.
+If the test infra is slow/unavailable, say so explicitly rather than skipping the red step.
 
 What earns a test: observable behavior, compatibility boundaries, deterministic calculations, and
 regressions likely to recur — anything exercisable through a stable interface at reasonable cost.
@@ -94,12 +94,7 @@ Never duplicate production logic in a test solely to make an implementation deta
 Documentation, formatting, metadata, and compile-only changes do not require a contrived failing
 test; run the smallest relevant verification after the change.
 
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
+For multi-step tasks, decide how each step will be verified before starting it.
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
