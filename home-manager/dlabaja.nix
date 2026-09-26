@@ -2,10 +2,10 @@
   pkgs,
   customModules,
   ...
-}: {
+}:
+{
   imports = [
     customModules.base
-    customModules.claude-code
     customModules.codex
   ];
 
