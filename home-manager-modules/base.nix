@@ -1,226 +1,306 @@
 { pkgs, lib, ... }:
 {
-	imports = [ ./prompt.nix ];
+  imports = [ ./prompt.nix ];
 
-	home.username = "dlabaja";
-	home.homeDirectory = "/home/dlabaja";
+  home.username = "dlabaja";
+  home.homeDirectory = "/home/dlabaja";
 
-	home.packages = with pkgs; [
-		vlc
-		spotify
-		jetbrains.clion
-		jetbrains.pycharm
-		gitkraken
-		gnomeExtensions.vitals
-		cmake
-		ninja
-		difftastic
-		mergiraf
-	];
+  home.packages = with pkgs; [
+    vlc
+    spotify
+    jetbrains.clion
+    jetbrains.pycharm
+    gitkraken
+    gnomeExtensions.vitals
+    cmake
+    ninja
+    difftastic
+    mergiraf
+  ];
 
-	home.sessionPath = [ "$HOME/.local/bin" ];
+  home.sessionPath = [ "$HOME/.local/bin" ];
 
-	programs = {
-		git = {
-			enable = true;
-			lfs.enable = true;
-			signing.format = "openpgp";
-			ignores = [
-				".direnv/"
-				".envrc.local"
-				".idea/"
-				".vscode/"
-				".venv/"
-				"__pycache__/"
-				"CMakeUserPresets.json"
-				".output.txt"
-				"*local.json"
-			];
+  programs = {
+    git = {
+      enable = true;
+      lfs.enable = true;
+      signing.format = "openpgp";
+      ignores = [
+        ".direnv/"
+        ".envrc.local"
+        ".idea/"
+        ".vscode/"
+        ".venv/"
+        "__pycache__/"
+        "CMakeUserPresets.json"
+        ".output.txt"
+        "*local.json"
+      ];
 
-			# IFD: runs mergiraf at build time to get the up-to-date list of
-			# supported extensions, so we never have to maintain it manually
-			attributes =
-				(lib.filter (s: s != "")
-					(lib.splitString "\n"
-						(builtins.readFile (pkgs.runCommand "mergiraf-gitattributes" {
-							buildInputs = [ pkgs.mergiraf ];
-						} ''
-							mergiraf languages --gitattributes > $out
-						''))))
-				++ [
-					# custom attributes
-				];
+      # IFD: runs mergiraf at build time to get the up-to-date list of
+      # supported extensions, so we never have to maintain it manually
+      attributes =
+        (lib.filter (s: s != "") (
+          lib.splitString "\n" (
+            builtins.readFile (
+              pkgs.runCommand "mergiraf-gitattributes"
+                {
+                  buildInputs = [ pkgs.mergiraf ];
+                }
+                ''
+                  							mergiraf languages --gitattributes > $out
+                  						''
+            )
+          )
+        ))
+        ++ [
+          # custom attributes
+        ];
 
-			settings = {
-				alias = {
-					ddiff = "-c diff.external=difft diff";
-					dlog  = "-c diff.external=difft log -p --ext-diff";
-					dshow = "-c diff.external=difft show --ext-diff";
-				};
-				merge = {
-					conflictStyle = "zdiff3";
-					mergiraf = {
-						name = "mergiraf";
-						driver = "mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
-					};
-				};
-			};
-		};
+      settings = {
+        alias = {
+          ddiff = "-c diff.external=difft diff";
+          dlog = "-c diff.external=difft log -p --ext-diff";
+          dshow = "-c diff.external=difft show --ext-diff";
+        };
+        merge = {
+          conflictStyle = "zdiff3";
+          mergiraf = {
+            name = "mergiraf";
+            driver = "mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P -l %L";
+          };
+        };
+      };
+    };
 
-		bash = {
-			enable = true;
-			historySize = 10000;
-			historyControl = [ "ignoreboth" "erasedups" ];
-			initExtra = ''
-				PROMPT_COMMAND="history -a"
-			'';
-		};
+    bash = {
+      enable = true;
+      historySize = 10000;
+      historyControl = [
+        "ignoreboth"
+        "erasedups"
+      ];
+      initExtra = ''
+        				PROMPT_COMMAND="history -a"
+        			'';
+    };
 
-		fish = {
-			enable = true;
+    fish = {
+      enable = true;
 
-			functions.fish_greeting = "fastfetch";
+      functions.fish_greeting = "fastfetch";
 
-			# Copied from fish's default so the path stays unshortened: it calls
-			# `prompt_pwd -d 1 -D 1`, and those literal flags win over
-			# fish_prompt_pwd_dir_length
-			functions.fish_title = ''
-				set -l ssh
-				set -q SSH_TTY
-				and set ssh "["(prompt_hostname | string sub -l 10 | string collect)"]"
-				set -l command $argv[1]
-				if not set -q argv[1]
-					set command (status current-command)
-					test "$command" = fish; and set command
-				end
-				echo -- $ssh (string sub -l 20 -- $command) (prompt_pwd -d 0)
-			'';
-		};
+      # Copied from fish's default so the path stays unshortened: it calls
+      # `prompt_pwd -d 1 -D 1`, and those literal flags win over
+      # fish_prompt_pwd_dir_length
+      functions.fish_title = ''
+        				set -l ssh
+        				set -q SSH_TTY
+        				and set ssh "["(prompt_hostname | string sub -l 10 | string collect)"]"
+        				set -l command $argv[1]
+        				if not set -q argv[1]
+        					set command (status current-command)
+        					test "$command" = fish; and set command
+        				end
+        				echo -- $ssh (string sub -l 20 -- $command) (prompt_pwd -d 0)
+        			'';
+    };
 
-		uv.enable = true;
+    uv.enable = true;
 
-		direnv = {
-			enable = true;
-			nix-direnv.enable = true;
-			silent = true;
-		};
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      silent = true;
+    };
 
-		fastfetch.enable = true;
-		fzf.enable = true;
-		ripgrep.enable = true;
-		btop.enable = true;
-		tmux.enable = true;
-		gcc.enable = true;
+    fastfetch.enable = true;
+    fzf.enable = true;
+    ripgrep.enable = true;
+    btop.enable = true;
+    tmux.enable = true;
+    gcc.enable = true;
 
-		ghostty = {
-			enable = true;
-			settings = {
-				font-size = "8.8";
-				shell-integration-features = "ssh-env,ssh-terminfo";
-			};
-		};
+    ghostty = {
+      enable = true;
+      settings = {
+        font-size = "8.8";
+        shell-integration-features = "ssh-env,ssh-terminfo";
+      };
+    };
 
-		neovim = {
-			enable        = true;
-			defaultEditor = true;
-			withRuby      = false;
-			withPython3   = false;
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+      withRuby = false;
+      withPython3 = false;
 
-			extraPackages = with pkgs; [
-				clang-tools           # clangd + clang-format for C/C++
-				pyright               # Python LSP
-				ruff                  # Python formatter
-				nixd                  # Nix LSP
-				alejandra             # Nix formatter
-				lua-language-server   # Lua LSP
-				stylua                # Lua formatter
-				cmake-language-server # CMake LSP
-				markdownlint-cli # Markdown linter
-			];
+      extraPackages = with pkgs; [
+        clang-tools # clangd + clang-format for C/C++
+        pyright # Python LSP
+        ruff # Python formatter
+        nixd # Nix LSP
+        alejandra # Nix formatter
+        lua-language-server # Lua LSP
+        stylua # Lua formatter
+        cmake-language-server # CMake LSP
+        markdownlint-cli # Markdown linter
+      ];
 
-			plugins = with pkgs.vimPlugins; [
-				# Theme
-				{ plugin = catppuccin-nvim;   type = "lua"; config = builtins.readFile ./nvim/plugins/catppuccin.lua; }
-				# Icons
-				nvim-web-devicons
-				# Syntax highlighting
-				nvim-treesitter.withAllGrammars
-				# Status bar
-				{ plugin = lualine-nvim;      type = "lua"; config = builtins.readFile ./nvim/plugins/lualine.lua; }
-				# Keybinding helper
-				{ plugin = which-key-nvim;    type = "lua"; config = builtins.readFile ./nvim/plugins/which-key.lua; }
-				# Fuzzy finder
-				plenary-nvim
-				telescope-ui-select-nvim
-				{ plugin = telescope-nvim;    type = "lua"; config = builtins.readFile ./nvim/plugins/telescope.lua; }
-				# Autopairs
-				{ plugin = nvim-autopairs;    type = "lua"; config = builtins.readFile ./nvim/plugins/autopairs.lua; }
-				# Guess indent
-				{ plugin = guess-indent-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/guess-indent.lua; }
-				# Motion training
-				{ plugin = precognition-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/precognition.lua; }
-				nui-nvim
-				{ plugin = hardtime-nvim;      type = "lua"; config = builtins.readFile ./nvim/plugins/hardtime.lua; }
-				vim-be-good
-				# Git signs
-				{ plugin = gitsigns-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/gitsigns.lua; }
-				# Mini
-				{ plugin = mini-nvim;         type = "lua"; config = builtins.readFile ./nvim/plugins/mini.lua; }
-				# LSP (data plugin - server configs; behavior is in nvim/init.lua)
-				nvim-lspconfig
-				# Formatter
-				{ plugin = conform-nvim;      type = "lua"; config = builtins.readFile ./nvim/plugins/conform.lua; }
-				# LSP progress spinner
-				{ plugin = fidget-nvim;       type = "lua"; config = builtins.readFile ./nvim/plugins/fidget.lua; }
-				# TODO comments
-				{ plugin = todo-comments-nvim; type = "lua"; config = builtins.readFile ./nvim/plugins/todo-comments.lua; }
-				# Linter
-				{ plugin = nvim-lint; type = "lua"; config = builtins.readFile ./nvim/plugins/lint.lua; }
-				# Completions
-				luasnip
-				{ plugin = blink-cmp;         type = "lua"; config = builtins.readFile ./nvim/plugins/blink.lua; }
-			];
+      plugins = with pkgs.vimPlugins; [
+        # Theme
+        {
+          plugin = catppuccin-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/catppuccin.lua;
+        }
+        # Icons
+        nvim-web-devicons
+        # Syntax highlighting
+        nvim-treesitter.withAllGrammars
+        # Status bar
+        {
+          plugin = lualine-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/lualine.lua;
+        }
+        # Keybinding helper
+        {
+          plugin = which-key-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/which-key.lua;
+        }
+        # Fuzzy finder
+        plenary-nvim
+        telescope-ui-select-nvim
+        {
+          plugin = telescope-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/telescope.lua;
+        }
+        # Autopairs
+        {
+          plugin = nvim-autopairs;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/autopairs.lua;
+        }
+        # Guess indent
+        {
+          plugin = guess-indent-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/guess-indent.lua;
+        }
+        # Motion training
+        {
+          plugin = precognition-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/precognition.lua;
+        }
+        nui-nvim
+        {
+          plugin = hardtime-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/hardtime.lua;
+        }
+        vim-be-good
+        # Git signs
+        {
+          plugin = gitsigns-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/gitsigns.lua;
+        }
+        # Mini
+        {
+          plugin = mini-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/mini.lua;
+        }
+        # LSP (data plugin - server configs; behavior is in nvim/init.lua)
+        nvim-lspconfig
+        # Formatter
+        {
+          plugin = conform-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/conform.lua;
+        }
+        # LSP progress spinner
+        {
+          plugin = fidget-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/fidget.lua;
+        }
+        # TODO comments
+        {
+          plugin = todo-comments-nvim;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/todo-comments.lua;
+        }
+        # Linter
+        {
+          plugin = nvim-lint;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/lint.lua;
+        }
+        # Completions
+        luasnip
+        {
+          plugin = blink-cmp;
+          type = "lua";
+          config = builtins.readFile ./nvim/plugins/blink.lua;
+        }
+      ];
 
-			initLua = builtins.readFile ./nvim/init.lua;
-		};
-	};
+      initLua = builtins.readFile ./nvim/init.lua;
+    };
+  };
 
-	home.sessionVariables = {
-		DFT_GRAPH_LIMIT = "4294967295";
-	};
+  home.sessionVariables = {
+    DFT_GRAPH_LIMIT = "4294967295";
+  };
 
-	services.remmina.enable = true;
+  services.remmina.enable = true;
 
-	dconf.settings = {
-		"org/gnome/desktop/interface" = {
-			clock-show-seconds = true;
-		};
-		"org/gnome/desktop/input-sources" = {
-			sources = [(pkgs.lib.gvariant.mkTuple ["xkb" "us"]) (pkgs.lib.gvariant.mkTuple ["xkb" "cz"])];
-			per-window = true;
-		};
-		"org/gnome/desktop/wm/keybindings" = {
-			switch-input-source = ["<Shift>Alt_L"];
-			switch-input-source-backward = ["<Alt>Shift_L"];
-		};
-		# Copilot key emits Super+Shift+F23
-		"org/gnome/settings-daemon/plugins/media-keys" = {
-			custom-keybindings = [ "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal/" ];
-		};
-		"org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal" = {
-			name = "Launch Terminal";
-			binding = "<Super><Shift>F23";
-			command = "xdg-terminal-exec";
-		};
-		"org/gnome/desktop/wm/preferences" = {
-			button-layout = "appmenu:minimize,maximize,close";
-		};
-		"org/gnome/desktop/app-folders" = {
-			folder-children = [""];
-		};
-		"org/gnome/shell" = {
-			app-picker-layout = [""];
-		};
-	};
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      clock-show-seconds = true;
+    };
+    "org/gnome/desktop/input-sources" = {
+      sources = [
+        (pkgs.lib.gvariant.mkTuple [
+          "xkb"
+          "us"
+        ])
+        (pkgs.lib.gvariant.mkTuple [
+          "xkb"
+          "cz"
+        ])
+      ];
+      per-window = true;
+    };
+    "org/gnome/desktop/wm/keybindings" = {
+      switch-input-source = [ "<Shift>Alt_L" ];
+      switch-input-source-backward = [ "<Alt>Shift_L" ];
+    };
+    # Copilot key emits Super+Shift+F23
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = [
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal/"
+      ];
+    };
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal" = {
+      name = "Launch Terminal";
+      binding = "<Super><Shift>F23";
+      command = "xdg-terminal-exec";
+    };
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:minimize,maximize,close";
+    };
+    "org/gnome/desktop/app-folders" = {
+      folder-children = [ "" ];
+    };
+    "org/gnome/shell" = {
+      app-picker-layout = [ "" ];
+    };
+  };
 
 }
