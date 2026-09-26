@@ -1,12 +1,14 @@
-{ pkgs, lib, ... }:
 {
-  imports = [ ./prompt.nix ];
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [./prompt.nix];
 
   home.username = "dlabaja";
   home.homeDirectory = "/home/dlabaja";
 
   home.packages = with pkgs; [
-    vlc
     spotify
     jetbrains.clion
     jetbrains.pycharm
@@ -16,9 +18,10 @@
     ninja
     difftastic
     mergiraf
+    jq
   ];
 
-  home.sessionPath = [ "$HOME/.local/bin" ];
+  home.sessionPath = ["$HOME/.local/bin"];
 
   programs = {
     git = {
@@ -44,12 +47,12 @@
           lib.splitString "\n" (
             builtins.readFile (
               pkgs.runCommand "mergiraf-gitattributes"
-                {
-                  buildInputs = [ pkgs.mergiraf ];
-                }
-                ''
-                  							mergiraf languages --gitattributes > $out
-                  						''
+              {
+                buildInputs = [pkgs.mergiraf];
+              }
+              ''
+                mergiraf languages --gitattributes > $out
+              ''
             )
           )
         ))
@@ -81,8 +84,8 @@
         "erasedups"
       ];
       initExtra = ''
-        				PROMPT_COMMAND="history -a"
-        			'';
+        PROMPT_COMMAND="history -a"
+      '';
     };
 
     fish = {
@@ -94,16 +97,16 @@
       # `prompt_pwd -d 1 -D 1`, and those literal flags win over
       # fish_prompt_pwd_dir_length
       functions.fish_title = ''
-        				set -l ssh
-        				set -q SSH_TTY
-        				and set ssh "["(prompt_hostname | string sub -l 10 | string collect)"]"
-        				set -l command $argv[1]
-        				if not set -q argv[1]
-        					set command (status current-command)
-        					test "$command" = fish; and set command
-        				end
-        				echo -- $ssh (string sub -l 20 -- $command) (prompt_pwd -d 0)
-        			'';
+        set -l ssh
+        set -q SSH_TTY
+        and set ssh "["(prompt_hostname | string sub -l 10 | string collect)"]"
+        set -l command $argv[1]
+        if not set -q argv[1]
+        	set command (status current-command)
+        	test "$command" = fish; and set command
+        end
+        echo -- $ssh (string sub -l 20 -- $command) (prompt_pwd -d 0)
+      '';
     };
 
     uv.enable = true;
@@ -252,6 +255,8 @@
 
       initLua = builtins.readFile ./nvim/init.lua;
     };
+
+    mpv.enable = true;
   };
 
   home.sessionVariables = {
@@ -278,8 +283,8 @@
       per-window = true;
     };
     "org/gnome/desktop/wm/keybindings" = {
-      switch-input-source = [ "<Shift>Alt_L" ];
-      switch-input-source-backward = [ "<Alt>Shift_L" ];
+      switch-input-source = ["<Shift>Alt_L"];
+      switch-input-source-backward = ["<Alt>Shift_L"];
     };
     # Copilot key emits Super+Shift+F23
     "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -296,11 +301,10 @@
       button-layout = "appmenu:minimize,maximize,close";
     };
     "org/gnome/desktop/app-folders" = {
-      folder-children = [ "" ];
+      folder-children = [""];
     };
     "org/gnome/shell" = {
-      app-picker-layout = [ "" ];
+      app-picker-layout = [""];
     };
   };
-
 }
