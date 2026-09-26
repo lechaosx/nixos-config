@@ -58,6 +58,7 @@ in
   systemd.user.settings.Manager.DefaultEnvironment = "ALSA_CONFIG_DIR=${alsaConfigDir}";
 
   environment.gnome.excludePackages = [
+    pkgs.showtime
     pkgs.gnome-tour
     pkgs.baobab
     pkgs.epiphany

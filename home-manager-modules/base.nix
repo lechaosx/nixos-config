@@ -2,13 +2,15 @@
   pkgs,
   lib,
   ...
-}: {
-  imports = [./prompt.nix];
+}:
+{
+  imports = [ ./prompt.nix ];
 
   home.username = "dlabaja";
   home.homeDirectory = "/home/dlabaja";
 
   home.packages = with pkgs; [
+    celluloid
     spotify
     jetbrains.clion
     jetbrains.pycharm
@@ -21,7 +23,7 @@
     jq
   ];
 
-  home.sessionPath = ["$HOME/.local/bin"];
+  home.sessionPath = [ "$HOME/.local/bin" ];
 
   programs = {
     git = {
@@ -47,12 +49,12 @@
           lib.splitString "\n" (
             builtins.readFile (
               pkgs.runCommand "mergiraf-gitattributes"
-              {
-                buildInputs = [pkgs.mergiraf];
-              }
-              ''
-                mergiraf languages --gitattributes > $out
-              ''
+                {
+                  buildInputs = [ pkgs.mergiraf ];
+                }
+                ''
+                  mergiraf languages --gitattributes > $out
+                ''
             )
           )
         ))
@@ -255,8 +257,6 @@
 
       initLua = builtins.readFile ./nvim/init.lua;
     };
-
-    mpv.enable = true;
   };
 
   home.sessionVariables = {
@@ -283,8 +283,8 @@
       per-window = true;
     };
     "org/gnome/desktop/wm/keybindings" = {
-      switch-input-source = ["<Shift>Alt_L"];
-      switch-input-source-backward = ["<Alt>Shift_L"];
+      switch-input-source = [ "<Shift>Alt_L" ];
+      switch-input-source-backward = [ "<Alt>Shift_L" ];
     };
     # Copilot key emits Super+Shift+F23
     "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -301,10 +301,10 @@
       button-layout = "appmenu:minimize,maximize,close";
     };
     "org/gnome/desktop/app-folders" = {
-      folder-children = [""];
+      folder-children = [ "" ];
     };
     "org/gnome/shell" = {
-      app-picker-layout = [""];
+      app-picker-layout = [ "" ];
     };
   };
 }
