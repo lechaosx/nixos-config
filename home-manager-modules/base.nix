@@ -273,18 +273,11 @@
       sources = [
         (pkgs.lib.gvariant.mkTuple [
           "xkb"
-          "us"
-        ])
-        (pkgs.lib.gvariant.mkTuple [
-          "xkb"
-          "cz"
+          "cz+coder"
         ])
       ];
-      per-window = true;
-    };
-    "org/gnome/desktop/wm/keybindings" = {
-      switch-input-source = [ "<Shift>Alt_L" ];
-      switch-input-source-backward = [ "<Alt>Shift_L" ];
+      # cz+coder is only listed in evdev.extras.xml, which GNOME ignores otherwise
+      show-all-sources = true;
     };
     # Copilot key emits Super+Shift+F23
     "org/gnome/settings-daemon/plugins/media-keys" = {
