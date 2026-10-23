@@ -11,10 +11,14 @@
 
   home.packages = with pkgs; [
     discord
-    transmission_4-qt
     aseprite
     lua
   ];
+
+  programs.npm = {
+    enable = true;
+    settings.prefix = "\${HOME}/.local";
+  };
 
   programs.git.settings.user = {
     name = "Drahomír Dlabaja";
