@@ -13,6 +13,7 @@
     discord
     aseprite
     lua
+    stremio-linux-shell
   ];
 
   programs.npm = {
