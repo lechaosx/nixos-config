@@ -8,8 +8,13 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }:
-    let
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }:
+    {
       nixosModules = {
         base = ./modules/base.nix;
         desktop = ./modules/desktop.nix;
@@ -25,29 +30,39 @@
         codex = ./home-manager-modules/ai/codex.nix;
       };
 
-      mkHost =
-        name:
-        nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            customModules = nixosModules;
-          };
+      nixosConfigurations = {
+        dlabaja-desktop = nixpkgs.lib.nixosSystem {
+          specialArgs = { customModules = self.nixosModules; };
           modules = [
-            ./hosts/${name}/configuration.nix
+            ./hosts/dlabaja-desktop/configuration.nix
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.extraSpecialArgs = {
-                customModules = homeManagerModules;
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { customModules = self.homeManagerModules; };
+                users.dlabaja = import ./home-manager/dlabaja.nix;
               };
-              home-manager.users.dlabaja = import ./home-manager/dlabaja.nix;
             }
           ];
         };
-    in
-    {
-      nixosConfigurations = nixpkgs.lib.genAttrs [ "dlabaja-desktop" "dlabaja-asus" ] mkHost;
 
-      inherit nixosModules homeManagerModules;
+        dlabaja-asus = nixpkgs.lib.nixosSystem {
+          specialArgs = { customModules = self.nixosModules; };
+          modules = [
+            ./hosts/dlabaja-asus/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                extraSpecialArgs = { customModules = self.homeManagerModules; };
+                users.dlabaja = import ./home-manager/dlabaja.nix;
+              };
+            }
+          ];
+        };
+
+      };
     };
 }
