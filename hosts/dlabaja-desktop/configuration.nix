@@ -16,6 +16,8 @@
     interfaces.enp4s0.wakeOnLan.enable = true;
   };
 
+  users.users.dlabaja.openssh.authorizedKeys.keyFiles = [ ./authorized_keys ];
+
   services = {
     gnome.gnome-remote-desktop.enable = true;
 
