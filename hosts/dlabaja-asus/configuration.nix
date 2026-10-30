@@ -7,8 +7,6 @@
   networking.hostName = "dlabaja-asus";
 
   environment.systemPackages = [
-    # Broken as of 20. 4. 2025
-    # pkgs.gnomeExtensions.power-profile-switcher
     pkgs.gnomeExtensions.battery-health-charging
   ];
 
