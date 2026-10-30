@@ -16,55 +16,67 @@
     }:
     {
       nixosModules = {
-        base = ./modules/base.nix;
+        workstation = ./modules/workstation.nix;
         desktop = ./modules/desktop.nix;
         gaming = ./modules/gaming.nix;
         grub = ./modules/grub.nix;
-        docker = ./modules/docker.nix;
         podman = ./modules/podman.nix;
       };
 
       homeManagerModules = {
-        base = ./home-manager-modules/base.nix;
+        workstation = ./home-manager-modules/workstation.nix;
         claude-code = ./home-manager-modules/ai/claude-code.nix;
         codex = ./home-manager-modules/ai/codex.nix;
       };
 
       nixosConfigurations = {
         dlabaja-desktop = nixpkgs.lib.nixosSystem {
-          specialArgs = { customModules = self.nixosModules; };
           modules = [
-            ./hosts/dlabaja-desktop/configuration.nix
             home-manager.nixosModules.home-manager
+            self.nixosModules.workstation
+            self.nixosModules.desktop
+            self.nixosModules.gaming
+            self.nixosModules.grub
+            self.nixosModules.podman
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { customModules = self.homeManagerModules; };
-                users.dlabaja = import ./home-manager/dlabaja.nix;
+                users.dlabaja.imports = [
+                  self.homeManagerModules.workstation
+                  self.homeManagerModules.codex
+                  ./home-manager/dlabaja.nix
+                ];
               };
             }
+            ./hosts/dlabaja-desktop/configuration.nix
           ];
         };
 
         dlabaja-asus = nixpkgs.lib.nixosSystem {
-          specialArgs = { customModules = self.nixosModules; };
           modules = [
-            ./hosts/dlabaja-asus/configuration.nix
             home-manager.nixosModules.home-manager
+            self.nixosModules.workstation
+            self.nixosModules.desktop
+            self.nixosModules.gaming
+            self.nixosModules.grub
+            self.nixosModules.podman
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                extraSpecialArgs = { customModules = self.homeManagerModules; };
-                users.dlabaja = import ./home-manager/dlabaja.nix;
+                users.dlabaja.imports = [
+                  self.homeManagerModules.workstation
+                  self.homeManagerModules.codex
+                  ./home-manager/dlabaja.nix
+                ];
               };
             }
+            ./hosts/dlabaja-asus/configuration.nix
           ];
         };
 
         raspberrypi = nixpkgs.lib.nixosSystem {
-          specialArgs = { customModules = self.nixosModules; };
           modules = [ ./hosts/raspberrypi/configuration.nix ];
         };
       };

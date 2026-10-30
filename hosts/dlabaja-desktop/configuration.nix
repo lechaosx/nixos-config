@@ -1,15 +1,8 @@
-{ pkgs, customModules, ... }:
+{ pkgs, ... }:
 {
-  imports = [
-    ./hardware-configuration.nix
-    customModules.base
-    customModules.desktop
-    customModules.gaming
-    customModules.grub
-    customModules.docker
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
-  grub.gfxmodeEfi = "1920x1080x32";
+  boot.loader.grub.gfxmodeEfi = "1920x1080x32";
 
   networking = {
     hostName = "dlabaja-desktop";

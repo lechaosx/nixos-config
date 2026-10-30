@@ -1,14 +1,5 @@
+{ pkgs, ... }:
 {
-  pkgs,
-  customModules,
-  ...
-}:
-{
-  imports = [
-    customModules.base
-    customModules.codex
-  ];
-
   home.packages = with pkgs; [
     discord
     aseprite
