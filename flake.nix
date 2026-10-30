@@ -15,6 +15,8 @@
       ...
     }:
     {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+
       nixosModules = {
         workstation = ./modules/workstation.nix;
         desktop = ./modules/desktop.nix;
