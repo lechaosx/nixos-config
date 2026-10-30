@@ -45,10 +45,6 @@
     };
     "org/gnome/shell" = {
       app-picker-layout = [ "" ];
-      enabled-extensions = [
-        "Vitals@CoreCoding.com"
-        "run-or-raise@edvard.cz"
-      ];
     };
   };
 }
