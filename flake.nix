@@ -63,6 +63,10 @@
           ];
         };
 
+        raspberrypi = nixpkgs.lib.nixosSystem {
+          specialArgs = { customModules = self.nixosModules; };
+          modules = [ ./hosts/raspberrypi/configuration.nix ];
+        };
       };
     };
 }
