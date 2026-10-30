@@ -1,0 +1,1 @@
+restrict ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMvnFaTicuz5VJLULS3Fb/4H96FYksIkGFl3DIZCtWpb github-actions-deploy
