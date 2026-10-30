@@ -1,6 +1,7 @@
 {
   lib,
   modulesPath,
+  pkgs,
   ...
 }:
 {
@@ -53,6 +54,12 @@
   };
 
   virtualisation.podman.enable = true;
+  environment.systemPackages = [ pkgs.podman-compose ];
+  virtualisation.containers.containersConf.settings.engine.compose_providers = [
+    (lib.getExe pkgs.podman-compose)
+  ];
+  systemd.sockets.podman.enable = false;
+  systemd.user.sockets.podman.enable = false;
 
   system.stateVersion = "26.11";
 }
