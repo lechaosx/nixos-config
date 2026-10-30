@@ -78,5 +78,6 @@ in
     pkgs.geary
     pkgs.seahorse
     pkgs.sushi
+    pkgs.gnome-console
   ];
 }

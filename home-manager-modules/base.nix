@@ -16,6 +16,7 @@
     jetbrains.pycharm
     gitkraken
     gnomeExtensions.vitals
+    gnomeExtensions.run-or-raise
     cmake
     ninja
     difftastic
@@ -265,6 +266,11 @@
 
   services.remmina.enable = true;
 
+  # Copilot key emits Super+Shift+F23
+  xdg.configFile."run-or-raise/shortcuts.conf".text = ''
+    <Super><Shift>F23:minimize-when-unfocused,xdg-terminal-exec,com.mitchellh.ghostty,
+  '';
+
   dconf.settings = {
     "org/gnome/desktop/interface" = {
       clock-show-seconds = true;
@@ -279,16 +285,8 @@
       # cz+coder is only listed in evdev.extras.xml, which GNOME ignores otherwise
       show-all-sources = true;
     };
-    # Copilot key emits Super+Shift+F23
     "org/gnome/settings-daemon/plugins/media-keys" = {
-      custom-keybindings = [
-        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal/"
-      ];
-    };
-    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/copilot-terminal" = {
-      name = "Launch Terminal";
-      binding = "<Super><Shift>F23";
-      command = "xdg-terminal-exec";
+      custom-keybindings = pkgs.lib.gvariant.mkEmptyArray pkgs.lib.gvariant.type.string;
     };
     "org/gnome/desktop/wm/preferences" = {
       button-layout = "appmenu:minimize,maximize,close";
@@ -298,6 +296,10 @@
     };
     "org/gnome/shell" = {
       app-picker-layout = [ "" ];
+      enabled-extensions = [
+        "Vitals@CoreCoding.com"
+        "run-or-raise@edvard.cz"
+      ];
     };
   };
 }
