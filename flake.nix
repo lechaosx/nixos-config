@@ -23,8 +23,9 @@
         podman = ./modules/podman.nix;
       };
 
-      homeManagerModules = {
+      homeModules = {
         workstation = ./home-manager-modules/workstation.nix;
+        desktop = ./home-manager-modules/desktop.nix;
         claude-code = ./home-manager-modules/ai/claude-code.nix;
         codex = ./home-manager-modules/ai/codex.nix;
       };
@@ -43,8 +44,9 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.dlabaja.imports = [
-                  self.homeManagerModules.workstation
-                  self.homeManagerModules.codex
+                  self.homeModules.workstation
+                  self.homeModules.desktop
+                  self.homeModules.codex
                   ./home-manager/dlabaja.nix
                 ];
               };
@@ -66,8 +68,9 @@
                 useGlobalPkgs = true;
                 useUserPackages = true;
                 users.dlabaja.imports = [
-                  self.homeManagerModules.workstation
-                  self.homeManagerModules.codex
+                  self.homeModules.workstation
+                  self.homeModules.desktop
+                  self.homeModules.codex
                   ./home-manager/dlabaja.nix
                 ];
               };
