@@ -7,6 +7,8 @@
   imports = [
     "${modulesPath}/profiles/minimal.nix"
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
+    ./users/dlabaja
+    ./users/github
   ];
 
   disabledModules = [ "profiles/base.nix" ];
@@ -41,13 +43,6 @@
   zramSwap.enable = true;
   services.journald.settings.Journal.SystemMaxUse = "100M";
 
-  users.users.dlabaja = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keyFiles = [ ./authorized_keys ];
-  };
-  security.sudo.wheelNeedsPassword = false;
-
   services.openssh = {
     enable = true;
     settings = {
@@ -57,11 +52,6 @@
     };
   };
 
-  users.users.github = {
-    isNormalUser = true;
-    linger = true;
-    openssh.authorizedKeys.keyFiles = [ ./github_authorized_keys ];
-  };
   virtualisation.podman.enable = true;
 
   system.stateVersion = "26.11";
