@@ -1,13 +1,11 @@
 {
+  config,
   pkgs,
   lib,
   ...
 }:
 {
   imports = [ ./prompt.nix ];
-
-  home.username = "dlabaja";
-  home.homeDirectory = "/home/dlabaja";
 
   home.packages = with pkgs; [
     celluloid
@@ -20,6 +18,8 @@
     difftastic
     mergiraf
     jq
+    gnomeExtensions.vitals
+    gnomeExtensions.run-or-raise
   ];
 
   home.sessionPath = [ "$HOME/.local/bin" ];
@@ -124,6 +124,14 @@
     btop.enable = true;
     tmux.enable = true;
     gcc.enable = true;
+
+    ghostty = {
+      enable = true;
+      settings = {
+        font-size = "8.8";
+        shell-integration-features = "ssh-env,ssh-terminfo";
+      };
+    };
 
     neovim = {
       enable = true;
@@ -254,6 +262,40 @@
 
   home.sessionVariables = {
     DFT_GRAPH_LIMIT = "4294967295";
+  };
+
+  # Copilot key emits Super+Shift+F23. Single-instance mode opens the window in
+  # an already-running Ghostty instead of starting a second instance.
+  xdg.configFile."run-or-raise/shortcuts.conf".text = ''
+    <Super><Shift>F23:minimize-when-unfocused,${lib.getExe config.programs.ghostty.package} --gtk-single-instance=true,com.mitchellh.ghostty,
+  '';
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      clock-show-seconds = true;
+    };
+    "org/gnome/desktop/input-sources" = {
+      sources = [
+        (lib.gvariant.mkTuple [
+          "xkb"
+          "cz+coder"
+        ])
+      ];
+      # cz+coder is only listed in evdev.extras.xml, which GNOME ignores otherwise
+      show-all-sources = true;
+    };
+    "org/gnome/settings-daemon/plugins/media-keys" = {
+      custom-keybindings = lib.gvariant.mkEmptyArray lib.gvariant.type.string;
+    };
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:minimize,maximize,close";
+    };
+    "org/gnome/desktop/app-folders" = {
+      folder-children = [ "" ];
+    };
+    "org/gnome/shell" = {
+      app-picker-layout = [ "" ];
+    };
   };
 
   services.remmina.enable = true;

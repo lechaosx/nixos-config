@@ -17,7 +17,6 @@
     {
       nixosModules = {
         workstation = ./modules/workstation.nix;
-        desktop = ./modules/desktop.nix;
         gaming = ./modules/gaming.nix;
         grub = ./modules/grub.nix;
         podman = ./modules/podman.nix;
@@ -25,7 +24,6 @@
 
       homeModules = {
         workstation = ./home-manager-modules/workstation.nix;
-        desktop = ./home-manager-modules/desktop.nix;
         claude-code = ./home-manager-modules/ai/claude-code.nix;
         codex = ./home-manager-modules/ai/codex.nix;
       };
@@ -35,7 +33,6 @@
           modules = [
             home-manager.nixosModules.home-manager
             self.nixosModules.workstation
-            self.nixosModules.desktop
             self.nixosModules.gaming
             self.nixosModules.grub
             self.nixosModules.podman
@@ -45,7 +42,6 @@
                 useUserPackages = true;
                 users.dlabaja.imports = [
                   self.homeModules.workstation
-                  self.homeModules.desktop
                   self.homeModules.codex
                   ./home-manager/dlabaja.nix
                 ];
@@ -59,7 +55,6 @@
           modules = [
             home-manager.nixosModules.home-manager
             self.nixosModules.workstation
-            self.nixosModules.desktop
             self.nixosModules.gaming
             self.nixosModules.grub
             self.nixosModules.podman
@@ -69,7 +64,6 @@
                 useUserPackages = true;
                 users.dlabaja.imports = [
                   self.homeModules.workstation
-                  self.homeModules.desktop
                   self.homeModules.codex
                   ./home-manager/dlabaja.nix
                 ];
