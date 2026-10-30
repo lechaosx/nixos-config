@@ -3,7 +3,7 @@ require("conform").setup({
 		c      = { "clang_format" },
 		cpp    = { "clang_format" },
 		python = { "ruff_format" },
-		nix    = { "alejandra" },
+		nix    = { "nixfmt" },
 		lua    = { "stylua" },
 	},
 	format_on_save = { timeout_ms = 500, lsp_format = "fallback" },

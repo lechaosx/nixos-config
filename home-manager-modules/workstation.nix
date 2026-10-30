@@ -138,7 +138,7 @@
         pyright # Python LSP
         ruff # Python formatter
         nixd # Nix LSP
-        alejandra # Nix formatter
+        nixfmt # Nix formatter
         lua-language-server # Lua LSP
         stylua # Lua formatter
         cmake-language-server # CMake LSP
