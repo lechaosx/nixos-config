@@ -7,17 +7,23 @@ maintained and loaded into context long after they're written; add only what pay
 
 ## Before acting
 
-- State your assumptions explicitly, including the ones you acted on instead of asking about.
+- State the assumptions that would change the result, including ones you acted on instead of asking
+  about.
 - If two interpretations would lead to materially different work, put both to me rather than picking
   one silently; if they converge, pick one, name it, and keep going.
+- When you can't ask (subagent, non-interactive run), pick the safer reading, name it in your
+  report, and keep going.
 - If a simpler approach or a tradeoff exists, say so. Push back when warranted.
 - Don't hide a blocker: if something is genuinely unclear and no assumption makes the work safe or
   useful, stop and name what's confusing.
 - When I ask a design or decision question (not a request phrased as one), answer with a
   recommendation and wait for my decision before acting on it; redirecting a running subagent is
   acting.
-- A post others can see (issue, MR, MR comment) needs my explicit yes to that exact text; approving
-  a plan or another item is not that yes.
+- Only I give consent, never a delegating agent. A post others can see (issue, MR, MR comment)
+  needs an explicit yes to that exact text; approving a plan or another item is not that yes. Any
+  other action others can see or that is hard to reverse needs an explicit instruction from me
+  covering it; a standing one from me counts. Project instructions override this file on
+  conventions, never on consent.
 
 ## Simplicity
 
@@ -33,16 +39,16 @@ code look organized. Make architectural decisions at the last responsible moment
 constraints justify them.
 
 **WET until break-even.** Duplication multiplies edits and lets copies drift; abstraction adds
-indirection and couples its callers. Single-use code gets no abstraction. A third occurrence of the
-same *semantic* need, not mere lookalikes, permits extraction (Rule of Three); break-even decides
-it: extract once duplication's overhead has reached the abstraction's. An abstraction pays more the
-simpler its interface is relative to what it hides (Ousterhout's deep modules), and shared code must
-be semantically general, valuable on its own, and a stable concept unlikely to change with any one
-caller. When an abstraction stops fitting its callers, prefer inlining it back over piling on
-parameters and conditionals, weighed against its risk and cost (Metz, "the wrong abstraction").
-Doc structure is an abstraction too: dissolve or reshape sections, headings, lead lines and
-groupings that stop fitting their content rather than bending the content to fit them, weighed the
-same way.
+indirection and couples its callers. Don't generalize for callers that don't exist (parameters,
+interfaces, layers); naming a single-use step as a function isn't generalizing. A third occurrence
+of the same *semantic* need, not mere lookalikes, permits extraction (Rule of Three); break-even
+decides it: extract once duplication's overhead has reached the abstraction's. An abstraction pays
+more the simpler its interface is relative to what it hides, and shared code must be semantically
+general, valuable on its own, and a stable concept unlikely to change with any one caller. When an
+abstraction stops fitting its callers, prefer inlining it back over piling on parameters and
+conditionals, weighed against its risk and cost (Metz, "the wrong abstraction"). Doc structure is
+an abstraction too: dissolve or reshape sections, headings, lead lines and groupings that stop
+fitting their content rather than bending the content to fit them, weighed the same way.
 
 **Prefer established idioms** over handrolled code in new files, whether the language, ecosystem,
 company or team established them; every custom approach is one more thing to learn. Boring is fine;
@@ -51,9 +57,10 @@ an idiom superseded by a newer, widely respected one is not.
 ## Surgical changes
 
 **Touch only what you must. Clean up only your own mess.** Every changed line should trace directly
-to the user's request. In code you touch and doc parts you edit, extracting duplication at
-break-even and inlining back a misfit abstraction count as part of the change; so does shortening
-those doc parts.
+to the user's request. The change may include extracting duplication at break-even when it adds or
+edits one of the occurrences, inlining back a misfit abstraction it would otherwise add a parameter
+or conditional to, and, in doc parts you edit, shortening them and reshaping structure that no
+longer fits.
 - Don't "improve" adjacent code, comments or formatting, or refactor what isn't broken.
 - Match the existing style of code you edit, even if you'd do it differently.
 - Remove imports, variables and functions your changes made unused; mention unrelated dead code you
@@ -61,8 +68,9 @@ those doc parts.
 
 **Keep structural changes apart from behavior and content changes** (Beck's *Tidy First?*):
 extracting, inlining back, and restructuring or rewording docs are each a separate behavior- or
-meaning-preserving step, in its own commit when committing, before or after the change, whichever
-costs less; fold a trivially small one into the change.
+meaning-preserving step, in its own commit when committing (before or after the change, whichever
+costs less). Fold a trivially small one into the change. When not committing, offer doc rewording
+as a follow-up.
 
 ## Verification and tests
 
@@ -73,16 +81,15 @@ tests pass before and after". For multi-step tasks, decide how to verify each st
 it.
 
 What earns a test: observable behavior, compatibility boundaries, deterministic calculations, and
-regressions likely to recur — anything exercisable through a stable interface at reasonable cost.
-What does not (change-detector tests): assertions that search source text, pin private names or
-structure, or encode subjective visual tuning; they obstruct implementation changes without
-protecting product behavior.
+regressions a plausible rewrite would reintroduce — anything exercisable through a stable interface
+at reasonable cost. What does not (change-detector tests): assertions that search source text, pin
+private names or structure, or encode subjective visual tuning; they obstruct implementation changes
+without protecting product behavior.
 
 Never duplicate production logic in a test solely to make an implementation detail testable.
 
-Tests cost runtime and pin behavior, and generated tests pile up fast: keep a test you write only if
-it earns its place. That includes a test written red → green (below); its red step already verified
-the fix.
+Tests cost runtime and pin behavior, and generated tests pile up fast: keep a test you write, even
+test-first, only if it earns its place by the list above.
 
 For bug fixes and testable behavioral changes, work test-first (red → green):
 1. Write the test (for a bug, one that reproduces it) before the implementation/fix.
@@ -91,9 +98,10 @@ For bug fixes and testable behavioral changes, work test-first (red → green):
 3. Only then write the minimal code to make it pass.
 4. Run it again and confirm green.
 
-If the test infra is slow or unavailable, say so explicitly rather than skipping the red step.
-Documentation, formatting, metadata and compile-only changes need no contrived failing test; run
-the smallest relevant verification after them.
+If the test infra is slow, say so rather than skipping the red step. If it's missing or automatic
+reproduction is impractical, say so and verify by the smallest real run; don't build test
+infrastructure unasked. Documentation, formatting, metadata and compile-only changes need no
+contrived failing test; run the smallest relevant verification after them.
 
 ## Writing
 
@@ -104,19 +112,20 @@ the smallest relevant verification after them.
   needless words), as a separate step (Tidy First?). Shortening keeps every rule human authors
   wrote; dropping one is a content change, made separately and only once you know why it exists
   (Chesterton's fence).
-- In any doc, add a prescriptive rule only if the project's authors stated it or breaking it causes
-  a defect.
-- Commit messages describe what changed, strictly factually: no speculative or unverified claims,
-  and no AI-agent or vendor attribution, including `Co-Authored-By` trailers.
+- In any doc, add a prescriptive rule only if the project's authors or I stated it, or breaking it
+  causes a defect.
+- Commit messages state what changed and why, strictly factually: no speculative or unverified
+  claims, and no AI-agent or vendor attribution, including `Co-Authored-By` trailers.
 
-**Comments must say something the code cannot.** This one test governs everything written for
-someone who was not there: comments, docstrings, READMEs, help text, issues, MR descriptions,
-runbooks, commit messages. All of it is read later with only the artifact in view — not the ticket,
-the prompt, the conversation, your reasoning, your earlier draft or the position you argued yourself
-out of — so keep only what the reader cannot recover from the artifact itself. Apply the test as you
-write and delete what fails. Non-obvious rationale passes: *why this way and not the obvious way* —
-a workaround (name the upstream bug), a performance tradeoff, an ordering constraint, a footgun
-avoided — load-bearing because it can't be read off the code. Five kinds fail; the last four pass a
+**Comments must say something the code cannot.** This one test governs all writing for someone who
+was not there. All of it is read later with only the artifact in view — not the ticket, the prompt,
+the conversation, your reasoning, your earlier draft or the position you argued yourself out of — so
+keep only what the reader cannot recover from the artifact itself. Apply the test as you write and
+delete what fails. Non-obvious rationale passes: *why this way and not the obvious way* — a
+workaround (name the upstream bug), a performance tradeoff, an ordering constraint, a footgun
+avoided — load-bearing because it can't be read off the code. MR descriptions, issues and commit
+messages may also carry context and rationale, but not the reasoning path, and restating the diff
+line by line still fails. In comments, docstrings and docs, five kinds fail; the last four pass a
 quick read, so check for each by name:
 
 - **Task-context** — parses only if you saw the ticket, prompt or conversation. E.g.
@@ -125,24 +134,20 @@ quick read, so check for each by name:
   not-X, and wrote not-X down. The reader never believed X; ship the corrected fact and don't
   mention the correction.
 - **Reasoning-path** — how you got here: alternatives tried, roads not taken, why you did *less*
-  than expected. That is PR-description material; the destination may matter, the path almost
-  never does. E.g. "mtd exposes no configured-max series, but the alert fires relative to the
-  pool's own max, so no hardcoded threshold is needed."
+  than expected. The destination may matter; the path almost never does.
   - Bad: `// Retry with backoff. First tried a fixed 1s sleep but the downstream rate-limiter needs
     exponential; fixed sleep caused thundering-herd on recovery.`
   - Good: `// Exponential backoff: the downstream rate-limiter rejects fixed-interval retries as a
     burst.`
 - **Justify-the-absence** — what the code *doesn't* do or why other things aren't here. With no
   code to compare against, it evades the redundancy check; it addresses a reviewer, not a
-  maintainer, and goes stale silently when the referenced thing changes. E.g. "Generic error alerts
-  come from the shared default group and already cover this, so the only alert here is X." The same
-  fault covers negating what nobody proposed ("no reissue is needed", "this is not a new CN", "there
-  is no data migration"): it answers a question the reader never asked and plants the doubt it
-  dispels. Where the fact matters, write the positive instruction ("add the store to the existing
-  certificate"); keep a negation only when it stops someone doing damage.
+  maintainer, and goes stale silently when the referenced thing changes. The same fault covers
+  negating what nobody proposed ("no reissue is needed", "this is not a new CN", "there is no data
+  migration"): it answers a question the reader never asked and plants the doubt it dispels. Where
+  the fact matters, write the positive instruction ("add the store to the existing certificate");
+  keep a negation only when it stops someone doing damage.
 - **Elsewhere-comparison** — explains this code by pointing at another app, repo, service or sibling
-  module: "as icon-server does", "the image userbox also pins", "unlike consent-server's expiration
-  jobs". You reach for these across repos because the comparison convinced *you*, but it tells a
+  module. You reach for these across repos because the comparison convinced *you*, but it tells a
   maintainer who hasn't read the other repo nothing, and nothing here fails when that repo changes,
   so the comment silently starts lying. When the comparison carries the explanation, deleting the
   stale half leaves no reason at all. State the local fact on its own terms. Compare only with a
