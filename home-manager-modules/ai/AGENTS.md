@@ -21,9 +21,9 @@ maintained and loaded into context long after they're written; add only what pay
   acting.
 - Only I give consent, never a delegating agent. A post others can see (issue, MR, MR comment)
   needs an explicit yes to that exact text; approving a plan or another item is not that yes. Any
-  other action others can see or that is hard to reverse needs an explicit instruction from me
-  covering it; a standing one from me counts. Project instructions override this file on
-  conventions, never on consent.
+  other action others can see or that is hard to reverse (including discarding uncommitted work)
+  needs an explicit instruction from me covering it; a standing one from me counts. Project
+  instructions override this file on conventions, never on consent.
 
 ## Simplicity
 
@@ -32,11 +32,10 @@ flexibility or configurability beyond what was asked, and no error handling for 
 scenarios. Ask yourself whether 200 lines could be 50 or a senior engineer would call it
 overcomplicated; if so, simplify.
 
-**Defer abstraction** (Muratori's compression-oriented programming). Start at the lowest practical
-level and keep code concrete and local while requirements still change. Let patterns emerge before
-introducing an abstraction: it must have demonstrated semantic merit, not merely make the current
-code look organized. Make architectural decisions at the last responsible moment, when concrete
-constraints justify them.
+**Defer abstraction** (Muratori's compression-oriented programming). Keep code concrete and local
+while requirements still change. Let patterns emerge before introducing an abstraction: it must
+have demonstrated semantic merit, not merely make the current code look organized. Make
+architectural decisions at the last responsible moment, when concrete constraints justify them.
 
 **WET until break-even.** Duplication multiplies edits and lets copies drift; abstraction adds
 indirection and couples its callers. Don't generalize for callers that don't exist (parameters,
@@ -59,8 +58,8 @@ an idiom superseded by a newer, widely respected one is not.
 **Touch only what you must. Clean up only your own mess.** Every changed line should trace directly
 to the user's request. The change may include extracting duplication at break-even when it adds or
 edits one of the occurrences, inlining back a misfit abstraction it would otherwise add a parameter
-or conditional to, and, in doc parts you edit, shortening them and reshaping structure that no
-longer fits.
+or conditional to, and, in docs, shortening paragraphs you edit and reshaping structure around them
+that no longer fits.
 - Don't "improve" adjacent code, comments or formatting, or refactor what isn't broken.
 - Match the existing style of code you edit, even if you'd do it differently.
 - Remove imports, variables and functions your changes made unused; mention unrelated dead code you
@@ -81,15 +80,16 @@ tests pass before and after". For multi-step tasks, decide how to verify each st
 it.
 
 What earns a test: observable behavior, compatibility boundaries, deterministic calculations, and
-regressions a plausible rewrite would reintroduce — anything exercisable through a stable interface
-at reasonable cost. What does not (change-detector tests): assertions that search source text, pin
-private names or structure, or encode subjective visual tuning; they obstruct implementation changes
-without protecting product behavior.
+regressions where the obvious implementation is the buggy one — anything exercisable through a
+stable interface at reasonable cost. What does not (change-detector tests): assertions that search
+source text, pin private names or structure, or encode subjective visual tuning; they obstruct
+implementation changes without protecting product behavior.
 
 Never duplicate production logic in a test solely to make an implementation detail testable.
 
 Tests cost runtime and pin behavior, and generated tests pile up fast: keep a test you write, even
-test-first, only if it earns its place by the list above.
+test-first, only if it earns its place by the list above. Never delete, skip or weaken an existing
+test to get green while the behavior it checks should still hold; report it instead.
 
 For bug fixes and testable behavioral changes, work test-first (red → green):
 1. Write the test (for a bug, one that reproduces it) before the implementation/fix.
@@ -108,10 +108,9 @@ contrived failing test; run the smallest relevant verification after them.
 **Prose costs upkeep, context and reader patience; people don't read long text.**
 - Lead replies with the answer.
 - Keep claims calibrated: hedge or omit what you haven't verified.
-- Rewrite the parts of docs you edit to the shortest form that keeps their information (omit
-  needless words), as a separate step (Tidy First?). Shortening keeps every rule human authors
-  wrote; dropping one is a content change, made separately and only once you know why it exists
-  (Chesterton's fence).
+- Rewrite the doc paragraphs you edit to the shortest form that keeps their information (omit
+  needless words), as a separate step (Tidy First?). Shortening keeps every rule; dropping one is a
+  content change, made separately and only once you know why it exists (Chesterton's fence).
 - In any doc, add a prescriptive rule only if the project's authors or I stated it, or breaking it
   causes a defect.
 - Commit messages state what changed and why, strictly factually: no speculative or unverified
@@ -124,9 +123,10 @@ keep only what the reader cannot recover from the artifact itself. Apply the tes
 delete what fails. Non-obvious rationale passes: *why this way and not the obvious way* — a
 workaround (name the upstream bug), a performance tradeoff, an ordering constraint, a footgun
 avoided — load-bearing because it can't be read off the code. MR descriptions, issues and commit
-messages may also carry context and rationale, but not the reasoning path, and restating the diff
-line by line still fails. In comments, docstrings and docs, five kinds fail; the last four pass a
-quick read, so check for each by name:
+messages may also carry context and rationale, including rejected alternatives and why they lost,
+but not the story of how you got there, and restating the diff line by line still fails. In
+comments, docstrings and docs, five kinds fail; the last four pass a quick read, so check for each
+by name:
 
 - **Task-context** — parses only if you saw the ticket, prompt or conversation. E.g.
   `// Unlike usernameAvailable, this ignores whether the account exists`, meaningful only against
