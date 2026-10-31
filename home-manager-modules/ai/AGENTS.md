@@ -40,6 +40,9 @@ simpler its interface is relative to what it hides (Ousterhout's deep modules), 
 be semantically general, valuable on its own, and a stable concept unlikely to change with any one
 caller. When an abstraction stops fitting its callers, prefer inlining it back over piling on
 parameters and conditionals, weighed against its risk and cost (Metz, "the wrong abstraction").
+Doc structure is an abstraction too: dissolve or reshape sections, headings, lead lines and
+groupings that stop fitting their content rather than bending the content to fit them, weighed the
+same way.
 
 **Prefer established idioms** over handrolled code in new files, whether the language, ecosystem,
 company or team established them; every custom approach is one more thing to learn. Boring is fine;
@@ -48,8 +51,9 @@ an idiom superseded by a newer, widely respected one is not.
 ## Surgical changes
 
 **Touch only what you must. Clean up only your own mess.** Every changed line should trace directly
-to the user's request. Shortening doc parts you edit, and extracting duplication at break-even or
-inlining back a misfit abstraction in code you touch, count as part of the change.
+to the user's request. In code you touch and doc parts you edit, extracting duplication at
+break-even and inlining back a misfit abstraction count as part of the change; so does shortening
+those doc parts.
 - Don't "improve" adjacent code, comments or formatting, or refactor what isn't broken.
 - Match the existing style of code you edit, even if you'd do it differently.
 - Remove imports, variables and functions your changes made unused; mention unrelated dead code you
