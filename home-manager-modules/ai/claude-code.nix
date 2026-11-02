@@ -6,6 +6,7 @@
 }:
 {
   programs.claude-code.enable = true;
+  programs.claude-code.skills = ./skills;
 
   # statusline-command.sh runs python3 off PATH
   home.packages = [ pkgs.python3 ];

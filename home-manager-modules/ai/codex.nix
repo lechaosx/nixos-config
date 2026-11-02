@@ -6,6 +6,7 @@
 }:
 {
   programs.codex.enable = true;
+  programs.codex.skills = ./skills;
 
   home.file.".codex/AGENTS.md" = {
     source = ./AGENTS.md;
