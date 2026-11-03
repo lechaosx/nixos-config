@@ -108,9 +108,9 @@ contrived failing test; run the smallest relevant verification after them.
 **Prose costs upkeep, context and reader patience; people don't read long text.**
 - Lead replies with the answer.
 - Keep claims calibrated: hedge or omit what you haven't verified.
-- Rewrite the doc paragraphs you edit to the shortest form that keeps their information (omit
-  needless words), as a separate step (Tidy First?). Shortening keeps every rule; dropping one is a
-  content change, made separately and only once you know why it exists (Chesterton's fence).
+- Rewrite the doc paragraphs you edit to omit needless words, as a separate step (Tidy First?).
+  Shortening keeps every rule; dropping one is a content change, made separately and only once you
+  know why it exists (Chesterton's fence).
 - In any doc, add a prescriptive rule only if the project's authors or I stated it, or breaking it
   causes a defect.
 - Commit messages state what changed and why, strictly factually: no speculative or unverified
