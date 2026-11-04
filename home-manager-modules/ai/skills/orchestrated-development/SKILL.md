@@ -62,6 +62,10 @@ normal judgment.
 - **Letting the design churn through running implementers** until chunks never end and the user is
   lost. Settle the design before implementing; when a loop stops converging, re-plan and tell the
   user the current direction in the work's own terms, not internal labels such as "prototype B".
+- **Growing a chunk past its goal** by adding each finding, exposed regression or new idea to it.
+  Take in only what the goal needs and move the rest to later chunks. When a finding shows the chunk
+  can't land as cut under its constraints, re-cut, reorder or merge chunks, or take the constraint
+  to the user.
 - **Re-running broad checks every round.** A round runs only the checks its edits can affect and
   doesn't re-check an unchanged tree, but whoever reuses a result judges what ran and against which
   baseline, not just that it passed. Broader verification runs once on what lands unless CI runs it.
